@@ -1,24 +1,24 @@
 {
-  "name": "@event-schedulr/backend",
-  "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "",
-  "scripts": {
-    "dev": "convex dev",
-    "dev:setup": "convex dev --configure --until-success"
-  },
-  "dependencies": {
-    "@better-auth/expo": "catalog:",
-    "@convex-dev/better-auth": "catalog:",
-    "better-auth": "catalog:",
-    "convex": "catalog:",
-    "dotenv": "catalog:",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@event-schedulr/config": "workspace:*",
-    "@types/node": "^24.3.0",
-    "typescript": "catalog:"
-  }
+	"name": "@event-schedulr/backend",
+	"version": "1.0.0",
+	"description": "",
+	"license": "ISC",
+	"author": "",
+	"scripts": {
+		"dev": "convex dev",
+		"dev:setup": "convex dev --configure --until-success"
+	},
+	"dependencies": {
+		"@better-auth/expo": "catalog:",
+		"@convex-dev/better-auth": "catalog:",
+		"better-auth": "catalog:",
+		"convex": "catalog:",
+		"dotenv": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@event-schedulr/config": "workspace:*",
+		"@types/node": "^24.3.0",
+		"typescript": "catalog:"
+	}
 }
