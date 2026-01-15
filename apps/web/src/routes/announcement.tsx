@@ -34,30 +34,30 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 
-export const Route = createFileRoute("/admin")({
-	component: AdminRoute,
+export const Route = createFileRoute("/announcement")({
+	component: AnnouncementRoute,
 });
 
 type EventStatus = "upcoming" | "live" | "ended";
 type AnnouncementType = "info" | "warning" | "success";
 
-function AdminRoute() {
+function AnnouncementRoute() {
 	const [message, setMessage] = useState("");
 	const [announcementType, setAnnouncementType] =
 		useState<AnnouncementType>("info");
 
 	const eventQuery = useSuspenseQuery(
 		convexQuery(api.events.getCurrentEvent, {}),
-	);
+	)
 	const event = eventQuery.data;
 
 	const announcements = useQuery(
 		api.announcements.getByEvent,
 		event ? { eventId: event._id } : "skip",
-	);
+	)
 
 	const seedEvent = useMutation(api.events.seed);
-	const updateStatus = useMutation(api.events.updateStatus);
+	const updateStatus = useMutation(api.events.update);
 	const createAnnouncement = useMutation(api.announcements.create);
 	const removeAnnouncement = useMutation(api.announcements.remove);
 
@@ -70,12 +70,12 @@ function AdminRoute() {
 	const handleStatusChange = async (status: EventStatus) => {
 		if (!event) return;
 		try {
-			await updateStatus({ id: event._id, status });
+			await updateStatus({ id: event._id, name: event.name, description: event.description, logo: event.logo, startsAt: event.startsAt, endsAt: event.endsAt, messageToParticipants: event.messageToParticipants });
 			toast.success(`Event status changed to ${status}`);
 		} catch {
 			toast.error("Failed to update status");
 		}
-	};
+	}
 
 	const handlePostAnnouncement = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -86,13 +86,13 @@ function AdminRoute() {
 				eventId: event._id,
 				message: message.trim(),
 				type: announcementType,
-			});
+			})
 			setMessage("");
 			toast.success("Announcement posted");
 		} catch {
 			toast.error("Failed to post announcement");
 		}
-	};
+	}
 
 	const handleDeleteAnnouncement = async (id: Id<"announcements">) => {
 		try {
@@ -101,7 +101,7 @@ function AdminRoute() {
 		} catch {
 			toast.error("Failed to delete announcement");
 		}
-	};
+	}
 
 	const getStatusBadgeVariant = (status: EventStatus) => {
 		switch (status) {
@@ -112,7 +112,7 @@ function AdminRoute() {
 			case "ended":
 				return "outline";
 		}
-	};
+	}
 
 	const getAnnouncementIcon = (type: AnnouncementType) => {
 		switch (type) {
@@ -123,7 +123,7 @@ function AdminRoute() {
 			case "success":
 				return <CheckCircle className="h-4 w-4" />;
 		}
-	};
+	}
 
 	const getAnnouncementStyle = (type: AnnouncementType) => {
 		switch (type) {
@@ -134,7 +134,7 @@ function AdminRoute() {
 			case "success":
 				return "border-l-emerald-500 bg-emerald-50 dark:bg-emerald-950/20";
 		}
-	};
+	}
 
 	if (!event) {
 		return (
@@ -145,7 +145,7 @@ function AdminRoute() {
 					</CardContent>
 				</Card>
 			</div>
-		);
+		)
 	}
 
 	return (
@@ -182,7 +182,7 @@ function AdminRoute() {
 				<CardContent>
 					<div className="flex items-center gap-4">
 						<span className="text-muted-foreground text-sm">Event Status:</span>
-						<Select value={event.status} onValueChange={handleStatusChange}>
+						<Select value={event.status} onValueChange={(v) => handleStatusChange(v as EventStatus)}>
 							<SelectTrigger className="w-[140px]">
 								<SelectValue />
 							</SelectTrigger>
@@ -295,5 +295,5 @@ function AdminRoute() {
 				</CardContent>
 			</Card>
 		</div>
-	);
+	)
 }
