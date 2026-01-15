@@ -7,21 +7,42 @@
 }
 
 @theme {
-  /* Backgrounds */
-  --color-bg-main: #0c0d0d;
-  --color-bg-section: #151717;
-  --color-bg-card: #212d2f;
-  --color-bg-card2: #D1D1D1;
+  /* Backgrounds - Dark (neutral with subtle blue tint) */
+  --color-bg-main: #0a0a0f;
+  --color-bg-section: #12121a;
+  --color-bg-card: #1a1a24;
+  --color-bg-input: #14141c;
+  --color-bg-overlay: rgba(0, 0, 0, 0.6);
 
-  /* Primary Accent (Teal) */
-  --color-primary: #22b0b8;
-  --color-primary-bright: #06a7b0;
-  --color-primary-dark: #0c6a72;
+  /* Primary Accent (Indigo) */
+  --color-primary: #6366F1;
+  --color-primary-bright: #818CF8;
+  --color-primary-dark: #4F46E5;
+  --color-primary-muted: rgba(99, 102, 241, 0.12);
 
   /* Neutrals */
-  --color-text-primary: #d5d7d7;
-  --color-text-muted: #606266;
-  --color-border: #212d2f;
+  --color-text-primary: #e4e4e7;
+  --color-text-muted: #71717a;
+  --color-text-inverse: #0a0a0f;
+  --color-border: #27272a;
+  --color-border-focus: #6366F1;
+
+  /* Semantic Colors */
+  --color-success: #22c55e;
+  --color-success-muted: rgba(34, 197, 94, 0.15);
+  --color-error: #ef4444;
+  --color-error-muted: rgba(239, 68, 68, 0.15);
+  --color-warning: #f59e0b;
+  --color-warning-muted: rgba(245, 158, 11, 0.15);
+
+  /* Light Theme Colors */
+  --color-light-bg-main: #fafafa;
+  --color-light-bg-section: #ffffff;
+  --color-light-bg-card: #f4f4f5;
+  --color-light-bg-input: #ffffff;
+  --color-light-text-primary: #18181b;
+  --color-light-text-muted: #71717a;
+  --color-light-border: #e4e4e7;
 }
 @custom-variant dark (&:is(.dark *));
 
