@@ -11,10 +11,7 @@ export default defineConfig({
     tanstackStart(),
     viteReact(),
     //this nitro plugin is a workaround to deploy on vercel
-    nitroV2Plugin /* 
-	// nitro config goes here, e.g.
-	{ preset: 'node-server' }
-  */(),
+    nitroV2Plugin(),
   ],
   server: {
     port: 3001,
