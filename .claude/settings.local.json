@@ -12,7 +12,8 @@
       "Bash(npx tsc:*)",
       "WebFetch(domain:www.better-auth.com)",
       "WebFetch(domain:convex-better-auth.netlify.app)",
-      "WebFetch(domain:labs.convex.dev)"
+      "WebFetch(domain:labs.convex.dev)",
+      "Bash(test:*)"
     ]
   }
 }
