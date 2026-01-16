@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { BarChart3, TrendingUp, Users, Calendar } from "lucide-react";
 
 import {
@@ -9,11 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export const Route = createFileRoute("/_authenticated/analytics")({
-  component: AnalyticsRoute,
-});
-
-function AnalyticsRoute() {
+export default function AnalyticsPage() {
   return (
     <div className="bg-bg-main min-h-screen w-full text-white">
       <div className="mx-auto container w-full space-y-6 py-10">
@@ -95,7 +90,7 @@ function AnalyticsRoute() {
               </div>
               <h3 className="mb-2 text-xl font-semibold">Coming Soon</h3>
               <p className="max-w-md text-muted-foreground">
-                We're working on bringing you detailed analytics and insights
+                We&apos;re working on bringing you detailed analytics and insights
                 for your events. Stay tuned for charts, reports, and
                 performance metrics.
               </p>

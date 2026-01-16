@@ -1,5 +1,7 @@
+"use client";
+
 import { api } from "@event-schedulr/backend/convex/_generated/api";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
 import { LogOut, Mail, Settings, User } from "lucide-react";
 
@@ -14,19 +16,15 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { authClient } from "@/lib/auth-client";
 
-export const Route = createFileRoute("/_authenticated/profile")({
-  component: ProfileRoute,
-});
-
-function ProfileRoute() {
-  const navigate = useNavigate();
+export default function ProfilePage() {
+  const router = useRouter();
   const user = useQuery(api.auth.getCurrentUser);
 
   const handleLogout = async () => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          navigate({ to: "/" });
+          router.push("/");
         },
       },
     });
