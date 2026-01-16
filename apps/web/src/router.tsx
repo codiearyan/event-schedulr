@@ -58,7 +58,10 @@ import { ConvexProvider } from 'convex/react';
 import { routeTree } from './routeTree.gen';
 
 export function getRouter() {
-  const convexUrl = (import.meta as any).env.VITE_CONVEX_URL!;
+  const convexUrl =
+    typeof window === "undefined"
+      ? process.env.CONVEX_URL!
+      : (import.meta as any).env.VITE_CONVEX_URL!;
   const convexQueryClient = new ConvexQueryClient(convexUrl, { expectAuth: true });
 
   const queryClient = new QueryClient({
