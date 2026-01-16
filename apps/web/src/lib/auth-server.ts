@@ -1,5 +1,5 @@
 import { convexBetterAuthReactStart } from "@convex-dev/better-auth/react-start";
-import { env } from "@event-schedulr/env/web";
+import { env } from "@event-schedulr/env/web-server";
 
 export const {
 	handler,
