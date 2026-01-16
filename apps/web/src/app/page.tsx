@@ -6,7 +6,7 @@ import { gsap } from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 import { useRef } from "react";
 import { SplitText } from "gsap/all";
-import Header from "@/components/header";
+import PublicHeader from "@/components/public-header";
 
 gsap.registerPlugin(TextPlugin, SplitText);
 
@@ -204,7 +204,7 @@ export default function HomePage() {
 
   return (
     <main>
-      <Header />
+      <PublicHeader />
 
       <div className="bg-bg-main flex flex-col gap-20 h-auto w-full">
         <div ref={herosec} className="">
