@@ -1,4 +1,5 @@
 import { ConvexQueryClient } from "@convex-dev/react-query";
+import { QueryClient } from "@tanstack/react-query";
 
 function getConvexUrl() {
   if (typeof window === "undefined") {
@@ -8,6 +9,8 @@ function getConvexUrl() {
 }
 
 let convexQueryClientSingleton: ConvexQueryClient | null = null;
+let queryClientSingleton: QueryClient | null = null;
+let isConnected = false;
 
 export function getConvexQueryClient(): ConvexQueryClient {
   if (!convexQueryClientSingleton) {
@@ -16,6 +19,30 @@ export function getConvexQueryClient(): ConvexQueryClient {
     });
   }
   return convexQueryClientSingleton;
+}
+
+export function getQueryClient(): QueryClient {
+  if (!queryClientSingleton) {
+    const convexQueryClient = getConvexQueryClient();
+    queryClientSingleton = new QueryClient({
+      defaultOptions: {
+        queries: {
+          queryKeyHashFn: convexQueryClient.hashFn(),
+          queryFn: convexQueryClient.queryFn(),
+        },
+      },
+    });
+  }
+  return queryClientSingleton;
+}
+
+export function connectConvexToQueryClient() {
+  if (!isConnected) {
+    const convexQueryClient = getConvexQueryClient();
+    const queryClient = getQueryClient();
+    convexQueryClient.connect(queryClient);
+    isConnected = true;
+  }
 }
 
 export function getConvexClient() {
