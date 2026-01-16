@@ -34,7 +34,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 
-export const Route = createFileRoute("/announcement")({
+export const Route = createFileRoute("/_authenticated/announcements")({
   component: AnnouncementRoute,
 });
 
