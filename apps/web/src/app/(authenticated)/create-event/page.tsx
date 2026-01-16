@@ -11,7 +11,7 @@ import {
   MessageSquare,
   Sparkles,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,38 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function CreateEventPage() {
+  return (
+    <Suspense fallback={<CreateEventSkeleton />}>
+      <CreateEventContent />
+    </Suspense>
+  );
+}
+
+function CreateEventSkeleton() {
+  return (
+    <div className="bg-bg-main min-h-screen w-full text-white">
+      <div className="mx-auto w-full max-w-2xl space-y-6 py-10">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5" />
+              <CardTitle>Loading...</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="animate-pulse space-y-4">
+              <div className="h-10 bg-white/10 rounded" />
+              <div className="h-24 bg-white/10 rounded" />
+              <div className="h-10 bg-white/10 rounded" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+function CreateEventContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const eventId = searchParams.get("eventId");
