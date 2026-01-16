@@ -11,9 +11,13 @@
 import type * as accessCodes from "../accessCodes.js";
 import type * as announcements from "../announcements.js";
 import type * as auth from "../auth.js";
+import type * as chatMessages from "../chatMessages.js";
 import type * as events from "../events.js";
+import type * as guessLogo from "../guessLogo.js";
 import type * as healthCheck from "../healthCheck.js";
 import type * as http from "../http.js";
+import type * as liveActivities from "../liveActivities.js";
+import type * as notifications from "../notifications.js";
 import type * as participants from "../participants.js";
 import type * as privateData from "../privateData.js";
 import type * as todos from "../todos.js";
@@ -28,9 +32,13 @@ declare const fullApi: ApiFromModules<{
   accessCodes: typeof accessCodes;
   announcements: typeof announcements;
   auth: typeof auth;
+  chatMessages: typeof chatMessages;
   events: typeof events;
+  guessLogo: typeof guessLogo;
   healthCheck: typeof healthCheck;
   http: typeof http;
+  liveActivities: typeof liveActivities;
+  notifications: typeof notifications;
   participants: typeof participants;
   privateData: typeof privateData;
   todos: typeof todos;

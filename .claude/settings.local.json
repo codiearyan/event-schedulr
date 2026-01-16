@@ -16,7 +16,12 @@
       "Bash(test:*)",
       "mcp__plugin_context7_context7__query-docs",
       "mcp__plugin_context7_context7__resolve-library-id",
-      "Bash(pnpm install)"
+      "Bash(pnpm install)",
+      "Bash(pnpm check-types:*)",
+      "Bash(pnpm --filter @event-schedulr/backend exec convex codegen:*)",
+      "Bash(pnpm biome check:*)",
+      "Bash(npx biome:*)",
+      "Bash(pnpm tsc:*)"
     ]
   }
 }

@@ -10,6 +10,8 @@ export const env = createEnv({
 		NODE_ENV: z
 			.enum(["development", "production", "test"])
 			.default("development"),
+		OPENAI_API_KEY: z.string().min(1).optional(),
+		LOGO_DEV_TOKEN: z.string().optional(),
 	},
 	runtimeEnv: process.env,
 	emptyStringAsUndefined: true,

@@ -46,9 +46,15 @@ function EntryMethodButton({
 						<Text className="font-semibold text-base text-text-primary">
 							{title}
 						</Text>
-						<Text className="mt-0.5 text-sm text-text-muted">{description}</Text>
+						<Text className="mt-0.5 text-sm text-text-muted">
+							{description}
+						</Text>
 					</View>
-					<Ionicons name="chevron-forward" size={20} color={colors.text.muted} />
+					<Ionicons
+						name="chevron-forward"
+						size={20}
+						color={colors.text.muted}
+					/>
 				</View>
 			</Pressable>
 		</Animated.View>
@@ -124,7 +130,7 @@ export default function WelcomeScreen() {
 				entering={FadeIn.delay(900).duration(500)}
 				className="mt-auto items-center pt-8"
 			>
-				<Text className="text-center text-xs text-text-muted">
+				<Text className="text-center text-text-muted text-xs">
 					Don't have an access code?{"\n"}Contact your event organizer
 				</Text>
 			</Animated.View>
