@@ -16,7 +16,7 @@ export default function EventScreen() {
 	);
 
 	const mutedColor = useThemeColor("muted");
-	const infoColor = useThemeColor("primary");
+	const infoColor = useThemeColor("background-inverse");
 	const warningColor = useThemeColor("warning");
 	const successColor = useThemeColor("success");
 
@@ -25,7 +25,7 @@ export default function EventScreen() {
 			case "live":
 				return "success";
 			case "upcoming":
-				return "secondary";
+				return "default";
 			case "ended":
 				return "default";
 			default:
@@ -109,7 +109,7 @@ export default function EventScreen() {
 							</Text>
 						</View>
 						<Chip
-							variant="solid"
+							variant="primary"
 							color={getStatusColor(event.status)}
 							size="sm"
 						>
