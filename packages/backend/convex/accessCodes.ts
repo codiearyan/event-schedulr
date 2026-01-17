@@ -2,7 +2,7 @@ import { v } from "convex/values";
 
 import { mutation, query } from "./_generated/server";
 
-function generateCode(length: number = 6): string {
+function generateCode(length = 6): string {
 	const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 	let code = "";
 	for (let i = 0; i < length; i++) {

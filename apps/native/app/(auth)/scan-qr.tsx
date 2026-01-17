@@ -1,9 +1,9 @@
-import { Ionicons } from "@expo/vector-icons";
 import { api } from "@event-schedulr/backend/convex/_generated/api";
+import { Ionicons } from "@expo/vector-icons";
+import { useQuery } from "convex/react";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
-import { useQuery } from "convex/react";
 import { useCallback, useEffect, useState } from "react";
 import { Platform, Pressable, Text, View } from "react-native";
 import Animated, {
@@ -129,7 +129,10 @@ export default function ScanQRScreen() {
 		return (
 			<View
 				className="flex-1 bg-bg-main px-6"
-				style={{ paddingTop: insets.top + 20, paddingBottom: insets.bottom + 20 }}
+				style={{
+					paddingTop: insets.top + 20,
+					paddingBottom: insets.bottom + 20,
+				}}
 			>
 				<Animated.View entering={FadeIn.duration(300)}>
 					<Pressable
@@ -142,9 +145,13 @@ export default function ScanQRScreen() {
 
 				<View className="flex-1 items-center justify-center">
 					<View className="mb-6 h-20 w-20 items-center justify-center rounded-2xl bg-bg-card">
-						<Ionicons name="camera-outline" size={40} color={colors.text.muted} />
+						<Ionicons
+							name="camera-outline"
+							size={40}
+							color={colors.text.muted}
+						/>
 					</View>
-					<Text className="mb-2 text-center font-semibold text-xl text-text-primary">
+					<Text className="mb-2 text-center font-semibold text-text-primary text-xl">
 						Camera Access Required
 					</Text>
 					<Text className="mb-8 text-center text-base text-text-muted">
@@ -159,7 +166,9 @@ export default function ScanQRScreen() {
 						</Text>
 					</Pressable>
 					<Pressable onPress={handleManualEntry} className="mt-4 p-2">
-						<Text className="text-sm text-primary">Enter code manually instead</Text>
+						<Text className="text-primary text-sm">
+							Enter code manually instead
+						</Text>
 					</Pressable>
 				</View>
 			</View>
@@ -180,7 +189,10 @@ export default function ScanQRScreen() {
 
 			<View
 				className="absolute inset-0"
-				style={{ paddingTop: insets.top + 20, paddingBottom: insets.bottom + 20 }}
+				style={{
+					paddingTop: insets.top + 20,
+					paddingBottom: insets.bottom + 20,
+				}}
 			>
 				<Animated.View
 					entering={FadeIn.duration(300)}
@@ -208,14 +220,14 @@ export default function ScanQRScreen() {
 
 				<View className="flex-1 items-center justify-center">
 					<View className="relative h-64 w-64">
-						<View className="absolute top-0 left-0 h-12 w-12 border-l-4 border-t-4 rounded-tl-2xl border-primary" />
-						<View className="absolute top-0 right-0 h-12 w-12 border-r-4 border-t-4 rounded-tr-2xl border-primary" />
-						<View className="absolute bottom-0 left-0 h-12 w-12 border-l-4 border-b-4 rounded-bl-2xl border-primary" />
-						<View className="absolute bottom-0 right-0 h-12 w-12 border-r-4 border-b-4 rounded-br-2xl border-primary" />
+						<View className="absolute top-0 left-0 h-12 w-12 rounded-tl-2xl border-primary border-t-4 border-l-4" />
+						<View className="absolute top-0 right-0 h-12 w-12 rounded-tr-2xl border-primary border-t-4 border-r-4" />
+						<View className="absolute bottom-0 left-0 h-12 w-12 rounded-bl-2xl border-primary border-b-4 border-l-4" />
+						<View className="absolute right-0 bottom-0 h-12 w-12 rounded-br-2xl border-primary border-r-4 border-b-4" />
 
 						<Animated.View
 							style={scanLineStyle}
-							className="absolute left-4 right-4 h-0.5 bg-primary"
+							className="absolute right-4 left-4 h-0.5 bg-primary"
 						/>
 					</View>
 				</View>
@@ -241,7 +253,7 @@ export default function ScanQRScreen() {
 					)}
 
 					<Pressable onPress={handleManualEntry} className="p-2">
-						<Text className="text-sm text-primary">Enter code manually</Text>
+						<Text className="text-primary text-sm">Enter code manually</Text>
 					</Pressable>
 				</Animated.View>
 			</View>

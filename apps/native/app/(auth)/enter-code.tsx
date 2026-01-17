@@ -1,16 +1,10 @@
-import { Ionicons } from "@expo/vector-icons";
 import { api } from "@event-schedulr/backend/convex/_generated/api";
+import { Ionicons } from "@expo/vector-icons";
+import { useQuery } from "convex/react";
 import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
-import { useQuery } from "convex/react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-	Platform,
-	Pressable,
-	Text,
-	TextInput,
-	View,
-} from "react-native";
+import { Platform, Pressable, Text, TextInput, View } from "react-native";
 import Animated, {
 	FadeIn,
 	FadeInDown,
@@ -182,8 +176,12 @@ export default function EnterCodeScreen() {
 					className="mt-4 items-center"
 				>
 					<View className="flex-row items-center gap-2 rounded-lg bg-error-muted px-4 py-2">
-						<Ionicons name="alert-circle" size={18} color={colors.semantic.error} />
-						<Text className="text-sm text-error">{error}</Text>
+						<Ionicons
+							name="alert-circle"
+							size={18}
+							color={colors.semantic.error}
+						/>
+						<Text className="text-error text-sm">{error}</Text>
 					</View>
 				</Animated.View>
 			)}

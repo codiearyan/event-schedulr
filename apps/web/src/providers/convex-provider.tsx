@@ -7,13 +7,13 @@ import { authClient } from "@/lib/auth-client";
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
 export function ConvexClientProvider({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  return (
-    <ConvexBetterAuthProvider client={convex} authClient={authClient}>
-      {children}
-    </ConvexBetterAuthProvider>
-  );
+	return (
+		<ConvexBetterAuthProvider client={convex} authClient={authClient}>
+			{children}
+		</ConvexBetterAuthProvider>
+	);
 }
