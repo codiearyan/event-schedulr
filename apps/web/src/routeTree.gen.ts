@@ -10,8 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TodosRouteImport } from './routes/todos'
+import { Route as EventsRouteImport } from './routes/events'
 import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as AdminRouteImport } from './routes/admin'
+import { Route as CreateEventRouteImport } from './routes/create-event'
+import { Route as AnnouncementRouteImport } from './routes/announcement'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
@@ -20,14 +22,24 @@ const TodosRoute = TodosRouteImport.update({
   path: '/todos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const CreateEventRoute = CreateEventRouteImport.update({
+  id: '/create-event',
+  path: '/create-event',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnnouncementRoute = AnnouncementRouteImport.update({
+  id: '/announcement',
+  path: '/announcement',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -43,38 +55,68 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/announcement': typeof AnnouncementRoute
+  '/create-event': typeof CreateEventRoute
   '/dashboard': typeof DashboardRoute
+  '/events': typeof EventsRoute
   '/todos': typeof TodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/announcement': typeof AnnouncementRoute
+  '/create-event': typeof CreateEventRoute
   '/dashboard': typeof DashboardRoute
+  '/events': typeof EventsRoute
   '/todos': typeof TodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/announcement': typeof AnnouncementRoute
+  '/create-event': typeof CreateEventRoute
   '/dashboard': typeof DashboardRoute
+  '/events': typeof EventsRoute
   '/todos': typeof TodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/dashboard' | '/todos' | '/api/auth/$'
+  fullPaths:
+    | '/'
+    | '/announcement'
+    | '/create-event'
+    | '/dashboard'
+    | '/events'
+    | '/todos'
+    | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/dashboard' | '/todos' | '/api/auth/$'
-  id: '__root__' | '/' | '/admin' | '/dashboard' | '/todos' | '/api/auth/$'
+  to:
+    | '/'
+    | '/announcement'
+    | '/create-event'
+    | '/dashboard'
+    | '/events'
+    | '/todos'
+    | '/api/auth/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/announcement'
+    | '/create-event'
+    | '/dashboard'
+    | '/events'
+    | '/todos'
+    | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AnnouncementRoute: typeof AnnouncementRoute
+  CreateEventRoute: typeof CreateEventRoute
   DashboardRoute: typeof DashboardRoute
+  EventsRoute: typeof EventsRoute
   TodosRoute: typeof TodosRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
@@ -88,6 +130,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TodosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -95,11 +144,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/create-event': {
+      id: '/create-event'
+      path: '/create-event'
+      fullPath: '/create-event'
+      preLoaderRoute: typeof CreateEventRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/announcement': {
+      id: '/announcement'
+      path: '/announcement'
+      fullPath: '/announcement'
+      preLoaderRoute: typeof AnnouncementRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -121,8 +177,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AnnouncementRoute: AnnouncementRoute,
+  CreateEventRoute: CreateEventRoute,
   DashboardRoute: DashboardRoute,
+  EventsRoute: EventsRoute,
   TodosRoute: TodosRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
