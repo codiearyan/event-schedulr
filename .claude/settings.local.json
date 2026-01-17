@@ -1,29 +1,31 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(ls:*)",
-      "Bash(git -C /Users/aryanbhati/code/projects/event-schedulr log --oneline -10)",
-      "Bash(du -sh:*)",
-      "Bash(tree:*)",
-      "WebFetch(domain:ui.shadcn.com)",
-      "Bash(pnpm dlx shadcn@latest add:*)",
-      "Bash(pnpm check:*)",
-      "Bash(npx convex:*)",
-      "Bash(npx tsc:*)",
-      "WebFetch(domain:www.better-auth.com)",
-      "WebFetch(domain:convex-better-auth.netlify.app)",
-      "WebFetch(domain:labs.convex.dev)",
-      "Bash(test:*)",
-      "mcp__plugin_context7_context7__query-docs",
-      "mcp__plugin_context7_context7__resolve-library-id",
-      "Bash(pnpm install)",
-      "Bash(pnpm check-types:*)",
-      "Bash(pnpm --filter @event-schedulr/backend exec convex codegen:*)",
-      "Bash(pnpm biome check:*)",
-      "Bash(npx biome:*)",
-      "Bash(pnpm tsc:*)",
-      "Bash(chmod:*)",
-      "Bash(git stash:*)"
-    ]
-  }
+	"permissions": {
+		"allow": [
+			"Bash(ls:*)",
+			"Bash(git -C /Users/aryanbhati/code/projects/event-schedulr log --oneline -10)",
+			"Bash(du -sh:*)",
+			"Bash(tree:*)",
+			"WebFetch(domain:ui.shadcn.com)",
+			"Bash(pnpm dlx shadcn@latest add:*)",
+			"Bash(pnpm check:*)",
+			"Bash(npx convex:*)",
+			"Bash(npx tsc:*)",
+			"WebFetch(domain:www.better-auth.com)",
+			"WebFetch(domain:convex-better-auth.netlify.app)",
+			"WebFetch(domain:labs.convex.dev)",
+			"Bash(test:*)",
+			"mcp__plugin_context7_context7__query-docs",
+			"mcp__plugin_context7_context7__resolve-library-id",
+			"Bash(pnpm install)",
+			"Bash(pnpm check-types:*)",
+			"Bash(pnpm --filter @event-schedulr/backend exec convex codegen:*)",
+			"Bash(pnpm biome check:*)",
+			"Bash(npx biome:*)",
+			"Bash(pnpm tsc:*)",
+			"Bash(chmod:*)",
+			"Bash(git stash:*)",
+			"Skill(web-design-guidelines)",
+			"Bash(pnpm --filter web exec tsc:*)"
+		]
+	}
 }

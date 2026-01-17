@@ -315,7 +315,10 @@ export function GuessLogoActivity({ activity, participantId }: Props) {
 								</Text>
 							</Surface>
 						) : (
-							<Surface variant="secondary" className="overflow-hidden rounded-lg">
+							<Surface
+								variant="secondary"
+								className="overflow-hidden rounded-lg"
+							>
 								{leaderboardData.map((entry, index) => (
 									<View
 										key={entry.participantId}
@@ -496,75 +499,75 @@ export function GuessLogoActivity({ activity, participantId }: Props) {
 								borderWidth: 2,
 							}}
 						>
-						<View className="items-center gap-2">
-							<Ionicons
-								name={
-									lastResult.isCorrect
-										? "checkmark-circle"
+							<View className="items-center gap-2">
+								<Ionicons
+									name={
+										lastResult.isCorrect
+											? "checkmark-circle"
+											: lastResult.isClose
+												? "alert-circle"
+												: "close-circle"
+									}
+									size={48}
+									color={
+										lastResult.isCorrect
+											? successColor
+											: lastResult.isClose
+												? warningColor
+												: dangerColor
+									}
+								/>
+								<Text
+									className="font-bold text-xl"
+									style={{
+										color: lastResult.isCorrect
+											? successColor
+											: lastResult.isClose
+												? warningColor
+												: dangerColor,
+									}}
+								>
+									{lastResult.isCorrect
+										? "Correct!"
 										: lastResult.isClose
-											? "alert-circle"
-											: "close-circle"
-								}
-								size={48}
-								color={
-									lastResult.isCorrect
-										? successColor
-										: lastResult.isClose
-											? warningColor
-											: dangerColor
-								}
-							/>
-							<Text
-								className="font-bold text-xl"
-								style={{
-									color: lastResult.isCorrect
-										? successColor
-										: lastResult.isClose
-											? warningColor
-											: dangerColor,
-								}}
-							>
-								{lastResult.isCorrect
-									? "Correct!"
-									: lastResult.isClose
-										? "You're close!"
-										: "Wrong!"}
-							</Text>
-							{lastResult.isCorrect && (
-								<Text className="text-foreground">
-									+{lastResult.pointsEarned} points
+											? "You're close!"
+											: "Wrong!"}
 								</Text>
-							)}
-							{!lastResult.isCorrect &&
-								lastResult.canRetry &&
-								!isTimerExpired && (
-									<View className="items-center gap-1">
-										<Text className="text-muted text-sm">
-											Attempt {lastResult.attemptNumber} of 5
-										</Text>
-										<Text className="text-muted text-sm">
-											Next attempt worth {lastResult.nextAttemptPoints} points
-										</Text>
-									</View>
-								)}
-							{!lastResult.isCorrect &&
-								(!lastResult.canRetry || isTimerExpired) &&
-								lastResult.correctAnswer && (
-									<Text className="text-center text-muted">
-										The answer was:{" "}
-										<Text className="font-medium text-foreground">
-											{lastResult.correctAnswer}
-										</Text>
+								{lastResult.isCorrect && (
+									<Text className="text-foreground">
+										+{lastResult.pointsEarned} points
 									</Text>
 								)}
-							{(lastResult.isCorrect ||
-								!lastResult.canRetry ||
-								isTimerExpired) && (
-								<Text className="mt-2 text-muted text-sm">
-									Waiting for next logo...
-								</Text>
-							)}
-						</View>
+								{!lastResult.isCorrect &&
+									lastResult.canRetry &&
+									!isTimerExpired && (
+										<View className="items-center gap-1">
+											<Text className="text-muted text-sm">
+												Attempt {lastResult.attemptNumber} of 5
+											</Text>
+											<Text className="text-muted text-sm">
+												Next attempt worth {lastResult.nextAttemptPoints} points
+											</Text>
+										</View>
+									)}
+								{!lastResult.isCorrect &&
+									(!lastResult.canRetry || isTimerExpired) &&
+									lastResult.correctAnswer && (
+										<Text className="text-center text-muted">
+											The answer was:{" "}
+											<Text className="font-medium text-foreground">
+												{lastResult.correctAnswer}
+											</Text>
+										</Text>
+									)}
+								{(lastResult.isCorrect ||
+									!lastResult.canRetry ||
+									isTimerExpired) && (
+									<Text className="mt-2 text-muted text-sm">
+										Waiting for next logo...
+									</Text>
+								)}
+							</View>
 						</Surface>
 					</ReanimatedModule.View>
 				)}
