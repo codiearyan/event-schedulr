@@ -29,6 +29,10 @@ export function middleware(request: NextRequest) {
 		return NextResponse.redirect(new URL("/events", request.url));
 	}
 
+	if (pathname === "/" && isAuthenticated) {
+		return NextResponse.redirect(new URL("/events?from=landing", request.url));
+	}
+
 	return NextResponse.next();
 }
 
