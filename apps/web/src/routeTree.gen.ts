@@ -10,7 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TodosRouteImport } from './routes/todos'
-import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -20,9 +20,9 @@ const TodosRoute = TodosRouteImport.update({
   path: '/todos',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -44,14 +44,14 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
-  '/dashboard': typeof DashboardRoute
+  '/signup': typeof SignupRoute
   '/todos': typeof TodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
-  '/dashboard': typeof DashboardRoute
+  '/signup': typeof SignupRoute
   '/todos': typeof TodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
@@ -59,22 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
-  '/dashboard': typeof DashboardRoute
+  '/signup': typeof SignupRoute
   '/todos': typeof TodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/dashboard' | '/todos' | '/api/auth/$'
+  fullPaths: '/' | '/admin' | '/signup' | '/todos' | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/dashboard' | '/todos' | '/api/auth/$'
-  id: '__root__' | '/' | '/admin' | '/dashboard' | '/todos' | '/api/auth/$'
+  to: '/' | '/admin' | '/signup' | '/todos' | '/api/auth/$'
+  id: '__root__' | '/' | '/admin' | '/signup' | '/todos' | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
-  DashboardRoute: typeof DashboardRoute
+  SignupRoute: typeof SignupRoute
   TodosRoute: typeof TodosRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
@@ -88,11 +88,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TodosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -122,7 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
-  DashboardRoute: DashboardRoute,
+  SignupRoute: SignupRoute,
   TodosRoute: TodosRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
