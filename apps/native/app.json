@@ -1,17 +1,45 @@
 {
-	"expo": {
-		"scheme": "event-schedulr",
-		"userInterfaceStyle": "automatic",
-		"orientation": "default",
-		"web": {
-			"bundler": "metro"
-		},
-		"name": "event-schedulr",
-		"slug": "event-schedulr",
-		"plugins": ["expo-font"],
-		"experiments": {
-			"typedRoutes": true,
-			"reactCompiler": true
-		}
-	}
+  "expo": {
+    "scheme": "eventschedulr",
+    "userInterfaceStyle": "automatic",
+    "orientation": "default",
+    "splash": {
+      "image": "./assets/images/logo.png",
+      "backgroundColor": "#0a0a0f",
+      "resizeMode": "contain"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "ios": {
+      "splash": {
+        "image": "./assets/images/logo.png",
+        "backgroundColor": "#0a0a0f",
+        "resizeMode": "contain"
+      }
+    },
+    "android": {
+      "splash": {
+        "image": "./assets/images/logo.png",
+        "backgroundColor": "#0a0a0f",
+        "resizeMode": "contain"
+      }
+    },
+    "name": "event-schedulr",
+    "slug": "event-schedulr",
+    "plugins": [
+      "expo-font",
+      "expo-splash-screen",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow EventSchedulr to access your camera to scan QR codes."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
 }
