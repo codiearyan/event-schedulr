@@ -1,5 +1,5 @@
 import { v } from "convex/values"
-import { mutation, query } from "./_generated/server"
+import { action, mutation, query } from "./_generated/server"
 
 //create sesion function
 export const createSession = mutation({
@@ -227,5 +227,132 @@ export const getNextUpcomingSession = query({
 			.sort((a, b) => a.startTime - b.startTime);
 
 		return upcoming[0] || null;
+	},
+});
+
+// AI Enhancement using Gemini - enhances description and suggests title
+export const enhanceSessionWithAI = action({
+	args: {
+		description: v.string(),
+		sessionType: v.optional(v.string()),
+		eventContext: v.optional(v.string()),
+	},
+	handler: async (_ctx, args) => {
+		const geminiApiKey = process.env.GEMINI_API_KEY;
+		if (!geminiApiKey) {
+			throw new Error("GEMINI_API_KEY not configured");
+		}
+
+		const sessionTypeContext = args.sessionType
+			? `This is a "${args.sessionType}" type session.`
+			: "";
+		const eventContextInfo = args.eventContext
+			? `Event context: ${args.eventContext}`
+			: "";
+
+		const prompt = `You are an event organizer. The user wrote a rough description for a session. Your job is to:
+
+1. Create a SHORT, CATCHY TITLE (20-35 characters)
+2. Rewrite the description to be CLEAR, FRIENDLY, and PROFESSIONAL in simple English (120-200 characters)
+
+${sessionTypeContext}
+${eventContextInfo}
+
+User's rough notes: "${args.description}"
+
+Make it sound welcoming and easy to understand. Fix grammar, add helpful details, and make it engaging.
+
+Examples:
+- Input: "lunch break everyone eat food"
+  Output: {"title":"Lunch Break","description":"Take a break and enjoy your meal! Grab your food, relax with fellow attendees, and recharge for the afternoon sessions."}
+
+- Input: "coding workshop learn react"
+  Output: {"title":"React Workshop","description":"Learn React basics in this hands-on coding workshop. Build your first component, understand state management, and create interactive UIs."}
+
+Now transform the user's input above. Return ONLY valid JSON:
+{"title":"Your Title","description":"Your enhanced description"}`;
+
+		const response = await fetch(
+			`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${geminiApiKey}`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					contents: [
+						{
+							parts: [{ text: prompt }],
+						},
+					],
+					generationConfig: {
+						temperature: 0.8,
+						maxOutputTokens: 1024,
+						stopSequences: ["}"],
+					},
+				}),
+			},
+		);
+
+		if (!response.ok) {
+			const errorText = await response.text();
+			throw new Error(`Gemini API error: ${response.status} - ${errorText}`);
+		}
+
+		const data = await response.json();
+		const content = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+		// Clean up the response - remove markdown, whitespace, etc.
+		let cleanContent = content
+			.replace(/```json\s*/gi, "")
+			.replace(/```\s*/gi, "")
+			.replace(/^\s+|\s+$/g, "")
+			.trim();
+
+		// Try to extract JSON from the response
+		const jsonMatch = cleanContent.match(/\{[\s\S]*\}/);
+		if (jsonMatch) {
+			cleanContent = jsonMatch[0];
+		}
+
+		// Try to fix incomplete JSON by adding closing characters
+		let jsonToParse = cleanContent;
+		if (!jsonToParse.endsWith("}")) {
+			if (jsonToParse.includes('"description"')) {
+				jsonToParse = jsonToParse + '"}';
+			}
+		}
+
+		try {
+			const parsed = JSON.parse(jsonToParse);
+			return {
+				success: true,
+				title: parsed.title || "",
+				description: parsed.description || "",
+			};
+		} catch (_parseError) {
+			// Fallback: Try to extract title and description using regex
+			const titleMatch = content.match(/"title"\s*:\s*"([^"]+)"/i);
+			const descMatch = content.match(/"description"\s*:\s*"([^"]*)/i);
+
+			if (titleMatch || descMatch) {
+				return {
+					success: true,
+					title: titleMatch?.[1] || "",
+					description: descMatch?.[1] || "",
+				};
+			}
+
+			// Last resort: Use the raw content as enhanced description
+			if (content.length > 0 && content.length < 500) {
+				return {
+					success: true,
+					title: "",
+					description: content.trim().slice(0, 200),
+				};
+			}
+
+			throw new Error("Could not parse AI response. Please try again.");
+		}
 	},
 });

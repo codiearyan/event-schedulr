@@ -2,9 +2,9 @@
 
 import { api } from "@event-schedulr/backend/convex/_generated/api";
 import type { Id } from "@event-schedulr/backend/convex/_generated/dataModel";
-import { useMutation, useQuery } from "convex/react";
+import { useAction, useMutation, useQuery } from "convex/react";
 import { format } from "date-fns";
-import { CalendarIcon, Plus } from "lucide-react";
+import { CalendarIcon, Plus, Sparkles } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { toast } from "sonner";
@@ -66,6 +66,7 @@ function CreateScheduleContent() {
 	);
 
 	const createSession = useMutation(api.schedule.createSession);
+	const enhanceWithAI = useAction(api.schedule.enhanceSessionWithAI);
 
 	const [formData, setFormData] = useState({
 		title: "",
@@ -123,11 +124,12 @@ function CreateScheduleContent() {
 
 	const [showDescription, setShowDescription] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isEnhancing, setIsEnhancing] = useState(false);
 
 	if (!eventId) {
 		return (
 			<div className="mx-auto max-w-5xl px-6 py-12 text-white">
-				<div className="rounded-xl border border-white/10 bg-white/[0.03] p-8 text-center">
+				<div className="rounded-xl border border-white/10 bg-white/3 p-8 text-center">
 					<h2 className="mb-2 font-semibold text-xl">Event ID Required</h2>
 					<p className="mb-6 text-white/60">
 						Please provide an event ID to create a session.
@@ -150,7 +152,7 @@ function CreateScheduleContent() {
 	if (event === null) {
 		return (
 			<div className="mx-auto max-w-5xl px-6 py-12 text-white">
-				<div className="rounded-xl border border-white/10 bg-white/[0.03] p-8 text-center">
+				<div className="rounded-xl border border-white/10 bg-white/3 p-8 text-center">
 					<h2 className="mb-2 font-semibold text-xl">Event Not Found</h2>
 					<p className="mb-6 text-white/60">
 						The event you're looking for doesn't exist.
@@ -172,6 +174,37 @@ function CreateScheduleContent() {
 		const combined = new Date(date);
 		combined.setHours(hours, minutes, 0, 0);
 		return combined.getTime();
+	};
+
+	const handleEnhanceWithAI = async () => {
+		if (!formData.description.trim()) {
+			toast.error("Please enter a description first");
+			return;
+		}
+
+		setIsEnhancing(true);
+		try {
+			const result = await enhanceWithAI({
+				description: formData.description,
+				sessionType: formData.type,
+				eventContext: event?.name,
+			});
+
+			if (result.success) {
+				setFormData((prev) => ({
+					...prev,
+					title: result.title || prev.title,
+					description: result.description || prev.description,
+				}));
+				toast.success("Enhanced with AI!");
+			}
+		} catch (error) {
+			toast.error(
+				error instanceof Error ? error.message : "Failed to enhance with AI",
+			);
+		} finally {
+			setIsEnhancing(false);
+		}
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -227,7 +260,7 @@ function CreateScheduleContent() {
 
 			<form onSubmit={handleSubmit} className="pb-16">
 				<div className="flex gap-6">
-					<div className="w-72 flex-shrink-0 space-y-4">
+					<div className="w-72 shrink-0 space-y-4">
 						<div className="aspect-square flex items-center justify-center rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(90,90,90,0.12)]">
 							<CalendarIcon className="h-16 w-16 text-white/30" />
 						</div>
@@ -336,15 +369,26 @@ function CreateScheduleContent() {
 								<span>Add Description</span>
 							</button>
 						) : (
-							<textarea
-								id="description"
-								value={formData.description}
-								onChange={(e) =>
-									setFormData({ ...formData, description: e.target.value })
-								}
-								placeholder="Describe your session..."
-								className="min-h-32 w-full resize-none rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(90,90,90,0.12)] p-4 text-lg placeholder:text-white/40 focus:border-white/20 focus:outline-none"
-							/>
+							<div className="space-y-2">
+								<textarea
+									id="description"
+									value={formData.description}
+									onChange={(e) =>
+										setFormData({ ...formData, description: e.target.value })
+									}
+									placeholder="Describe your session..."
+									className="min-h-32 w-full resize-none rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(90,90,90,0.12)] p-4 text-lg placeholder:text-white/40 focus:border-white/20 focus:outline-none"
+								/>
+								<button
+									type="button"
+									onClick={handleEnhanceWithAI}
+									disabled={isEnhancing || !formData.description.trim()}
+									className="flex items-center gap-2 rounded-lg bg-linear-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 px-4 py-2 text-sm text-purple-300 transition-all hover:border-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+								>
+									<Sparkles className={`h-4 w-4 ${isEnhancing ? "animate-spin" : ""}`} />
+									<span>{isEnhancing ? "Enhancing..." : "Enhance with AI"}</span>
+								</button>
+							</div>
 						)}
 
 						<div className="grid gap-4 sm:grid-cols-2">
