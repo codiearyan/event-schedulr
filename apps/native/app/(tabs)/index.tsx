@@ -1,60 +1,86 @@
+import { Ionicons } from "@expo/vector-icons";
 import { api } from "@event-schedulr/backend/convex/_generated/api";
-import { useConvexAuth, useQuery } from "convex/react";
-import {
-  Button,
-  Chip,
-  Divider,
-  Spinner,
-  Surface,
-  useThemeColor,
-} from "heroui-native";
-import { Text, View } from "react-native";
+import type { Id } from "@event-schedulr/backend/convex/_generated/dataModel";
+import * as Haptics from "expo-haptics";
+import { useQuery } from "convex/react";
+import { Button, Chip, ChipColor, Surface } from "heroui-native";
+import { Image, Platform, Text, View } from "react-native";
 
 import { Container } from "@/components/container";
-import { SignIn } from "@/components/sign-in";
-import { SignUp } from "@/components/sign-up";
-import { authClient } from "@/lib/auth-client";
+import { useParticipant } from "@/contexts/participant-context";
+
+function generateAvatarUrl(avatarSeed: string): string {
+  const [seed, style = "adventurer"] = avatarSeed.split("-");
+  return `https://api.dicebear.com/9.x/${style}/png?seed=${seed}&size=200`;
+}
 
 export default function Home() {
+  const { session, clearSession } = useParticipant();
   const healthCheck = useQuery(api.healthCheck.get);
-  const { isAuthenticated } = useConvexAuth();
-  const user = useQuery(api.auth.getCurrentUser, isAuthenticated ? {} : "skip");
-  const successColor = useThemeColor("success");
-  const dangerColor = useThemeColor("danger");
+  const event = useQuery(api.events.getCurrentEvent, session ? {} : "skip");
 
-  const isConnected = healthCheck === "OK";
-  const isLoading = healthCheck === undefined;
+  const handleSignOut = async () => {
+    if (Platform.OS === "ios") {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }
+    await clearSession();
+  };
 
   return (
     <Container className="p-4">
       <View className="mb-4 py-6">
         <Text className="font-semibold text-3xl text-foreground tracking-tight">
-          Event Schedulr
+          {event?.name || "EventSchedulr"}
         </Text>
         <Text className="mt-1 text-muted text-sm">
-          Event updates in realtime
+          {event?.description || "Event updates in realtime"}
         </Text>
       </View>
 
-      {user ? (
+      {event && (
+        <Surface variant="secondary" className="mb-4 rounded-lg p-4">
+          <View className="flex-row items-center gap-2 mb-2">
+            <Chip
+              size="sm"
+              color={
+                (event.status === "live"
+                  ? "success"
+                  : event.status === "upcoming"
+                  ? "primary"
+                  : "default") as ChipColor
+              }
+            >
+              {event.status.toUpperCase()}
+            </Chip>
+          </View>
+          <Text className="text-sm text-muted">{event.description}</Text>
+        </Surface>
+      )}
+
+      {session && (
         <Surface variant="secondary" className="mb-4 rounded-lg p-4">
           <View className="flex-row items-center justify-between">
-            <View className="flex-1">
-              <Text className="font-medium text-foreground">{user.name}</Text>
-              <Text className="mt-0.5 text-muted text-xs">{user.email}</Text>
+            <View className="flex-row items-center gap-3 flex-1">
+              <Image
+                source={{ uri: generateAvatarUrl(session.avatarSeed) }}
+                className="h-12 w-12 rounded-xl bg-bg-card"
+              />
+              <View className="flex-1">
+                <Text className="font-medium text-foreground">
+                  {session.name}
+                </Text>
+                <Text className="mt-0.5 text-muted text-xs">
+                  {session.email}
+                </Text>
+              </View>
             </View>
-            <Button
-              variant="danger"
-              size="sm"
-              onPress={() => {
-                authClient.signOut();
-              }}
-            >
-              Sign Out
+            <Button variant="danger" size="sm" onPress={handleSignOut}>
+              Leave
             </Button>
           </View>
         </Surface>
-      ) : null}
+      )}
+
       <Surface variant="secondary" className="rounded-lg p-4">
         <Text className="mb-2 font-medium text-foreground">API Status</Text>
         <View className="flex-row items-center gap-2">
@@ -72,12 +98,6 @@ export default function Home() {
           </Text>
         </View>
       </Surface>
-      {!user && (
-        <View className="mt-4 gap-4">
-          <SignIn />
-          <SignUp />
-        </View>
-      )}
     </Container>
   );
 }
