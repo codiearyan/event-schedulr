@@ -68,9 +68,8 @@
 // }
 
 import { Link } from "@tanstack/react-router";
-import { api } from "@event-schedulr/backend/convex/_generated/api";
-import { useQuery } from "convex/react";
-
+// import { api } from "@event-schedulr/backend/convex/_generated/api";
+// import { useQuery } from "convex/react";
 // import UserMenu from "@/components/user-menu";
 
 export default function Header() {
