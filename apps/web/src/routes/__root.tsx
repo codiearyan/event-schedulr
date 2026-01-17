@@ -1,6 +1,7 @@
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
 import type { ConvexQueryClient } from "@convex-dev/react-query";
 import type { QueryClient } from "@tanstack/react-query";
+import { ConvexProvider } from "convex/react";
 import {
   createRootRouteWithContext,
   HeadContent,
@@ -65,25 +66,27 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 function RootDocument() {
   const context = useRouteContext({ from: Route.id });
   return (
-    <ConvexBetterAuthProvider
-      client={context.convexQueryClient.convexClient}
-      authClient={authClient}
-      initialToken={context.token}
-    >
-      <html lang="en" className="dark">
-        <head>
-          <HeadContent />
-        </head>
-        <body>
-          <div className="grid h-svh grid-rows-[auto_1fr]">
-            <Header />
-            <Outlet />
-          </div>
-          <Toaster richColors />
-          <TanStackRouterDevtools position="bottom-left" />
-          <Scripts />
-        </body>
-      </html>
-    </ConvexBetterAuthProvider>
+    <ConvexProvider client={context.convexQueryClient.convexClient}>
+      <ConvexBetterAuthProvider
+        client={context.convexQueryClient.convexClient}
+        authClient={authClient}
+        initialToken={context.token}
+      >
+        <html lang="en" className="dark">
+          <head>
+            <HeadContent />
+          </head>
+          <body>
+            <div className="grid h-svh grid-rows-[auto_1fr]">
+              <Header />
+              <Outlet />
+            </div>
+            <Toaster richColors />
+            <TanStackRouterDevtools position="bottom-left" />
+            <Scripts />
+          </body>
+        </html>
+      </ConvexBetterAuthProvider>
+    </ConvexProvider>
   );
 }
