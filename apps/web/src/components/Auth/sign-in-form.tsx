@@ -51,7 +51,10 @@ export default function SignInForm({
 
 	return (
 		<div className="flex min-h-screen items-center justify-center px-4 py-12 text-light-text-muted">
-			<div className="w-full max-w-md">
+			<div className="w-full max-w-lg">
+				
+
+				<div className="rounded-2xl border border-border/50 bg-bg-card p-8 shadow-md backdrop-blur-sm">
 				<div className="mb-8 text-center">
 					<h1 className="text-balance font-bold text-3xl text-foreground tracking-tight">
 						Welcome back
@@ -60,8 +63,6 @@ export default function SignInForm({
 						Sign in to your account to continue
 					</p>
 				</div>
-
-				<div className="rounded-2xl border border-border/50 bg-bg-card p-8 shadow-md backdrop-blur-sm">
 					<form
 						onSubmit={(e) => {
 							e.preventDefault();
@@ -172,11 +173,9 @@ export default function SignInForm({
 					</div>
 
 					<div className="mt-7">
-						<GoogleSignIn />
+						<GoogleSignIn label={"Sign in With Google"} />
 					</div>
-				</div>
-
-				<div className="mt-6 text-center">
+					<div className="mt-6 text-center">
 					<p className="text-muted-foreground text-sm">
 						Don't have an account?{" "}
 						<button
@@ -187,6 +186,9 @@ export default function SignInForm({
 						</button>
 					</p>
 				</div>
+				</div>
+
+				
 			</div>
 		</div>
 	);

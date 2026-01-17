@@ -10,10 +10,10 @@ export default function AuthPage() {
 	const [isSignUp, setIsSignUp] = useState(true);
 
 	return (
-		<div className="relative flex min-h-screen overflow-hidden bg-background">
+		<div className="relative flex min-h-screen overflow-hidden eve">
 			{/* FORM PANEL */}
 			<motion.div
-				className="absolute inset-y-0 z-10 flex w-full items-center justify-center bg-white p-6 lg:w-1/2 lg:p-12 dark:bg-bg-section"
+				className="absolute inset-y-0 z-10 flex w-full items-center justify-center p-6 lg:w-1/2 lg:p-12 "
 				animate={{
 					x: isSignUp ? "0%" : "100%",
 				}}
@@ -33,7 +33,7 @@ export default function AuthPage() {
 
 			{/* WELCOME PANEL */}
 			<motion.div
-				className="absolute inset-y-0 flex w-full items-center justify-center bg-bg-main p-12 lg:w-1/2"
+				className="absolute inset-y-0 flex w-full items-center justify-center p-12 lg:w-1/2"
 				animate={{
 					x: isSignUp ? "100%" : "0%",
 				}}

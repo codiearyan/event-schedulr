@@ -51,8 +51,11 @@ export default function SignUpForm({
 	});
 
 	return (
-		<div className="flex min-h-screen items-center justify-center px-4 py-8 text-light-text-muted">
-			<div className="w-full max-w-md">
+		<div className="flex min-h-screen items-center justify-center px-4 py-12 text-light-text-muted">
+			
+
+				<div className="rounded-2xl border border-border/50 bg-bg-card bg-card p-8 shadow-md backdrop-blur-sm w-full  max-w-lg flex flex-col items-center justify-center ">
+				<div className="w-full max-w-md">
 				<div className="mb-4 text-center">
 					<h1 className="text-balance font-bold text-3xl tracking-tight">
 						Create your account
@@ -61,8 +64,6 @@ export default function SignUpForm({
 						Join our community and start your journey today
 					</p>
 				</div>
-
-				<div className="rounded-2xl border border-border/50 bg-bg-card bg-card p-8 shadow-md backdrop-blur-sm">
 					<form
 						onSubmit={(e) => {
 							e.preventDefault();
@@ -230,11 +231,9 @@ export default function SignUpForm({
 					</div>
 
 					<div className="mt-7">
-						<GoogleSignIn />
+						<GoogleSignIn  label={"Signup with Google"}/>
 					</div>
-				</div>
-
-				<div className="mt-6 text-center">
+					<div className="mt-6 text-center">
 					<p className="text-muted-foreground text-sm">
 						Already have an account?{" "}
 						<button
@@ -245,6 +244,9 @@ export default function SignUpForm({
 						</button>
 					</p>
 				</div>
+				</div>
+
+				
 			</div>
 		</div>
 	);

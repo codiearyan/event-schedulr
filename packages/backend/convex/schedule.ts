@@ -1,6 +1,5 @@
-import { v } from "convex/values";
-import { success } from "zod";
-import { mutation, query } from "./_generated/server";
+import { v } from "convex/values"
+import { mutation, query } from "./_generated/server"
 
 //create sesion function
 export const createSession = mutation({
@@ -36,21 +35,24 @@ export const createSession = mutation({
 			throw new Error("Event not found");
 		}
 
-		//creating the session
-		const sessionId = await ctx.db.insert("sessions", {
-			eventId: args.eventId,
-			title: args.title,
-			description: args.description,
-			date: args.date,
-			startTime: args.startTime,
-			endTime: args.endTime,
-			location: args.location,
-			speaker: args.speaker,
-			type: args.type,
-			status: args.status,
-		});
-	},
-});
+        //creating the session
+        const sessionId = await ctx.db.insert("sessions", {
+            eventId: args.eventId,
+            title: args.title,
+            description: args.description,
+            date: args.date,
+            startTime: args.startTime,
+            endTime: args.endTime,
+            location: args.location,
+            speaker: args.speaker,
+            type: args.type,
+            status: args.status,
+        });
+
+        const session = await ctx.db.get(sessionId);
+        return session;
+    }
+})
 
 //get all session by event (sorted by time) All session
 export const getSessionsByEvent = query({
@@ -123,11 +125,11 @@ export const deleteSession = mutation({
 			throw new Error("Session not found");
 		}
 
-		//delete the session
-		await ctx.db.delete(args.sessionId);
-		return { success: true };
-	},
-});
+        //delete the session
+        await ctx.db.delete(args.sessionId);
+        return { success: true };
+    }
+})
 
 //update the session status
 //TODO:agar crob job lagaya toh isko change karna hoga

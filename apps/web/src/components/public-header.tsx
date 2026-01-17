@@ -10,9 +10,9 @@ export default function PublicHeader() {
 
 	return (
 		<header className="sticky top-0 z-50">
-			<div className="absolute inset-0 bg-linear-to-b from-[#0b0f1a] via-[#0a0d14] to-[#06080f]" />
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(99,102,241,0.15),transparent_40%)]" />
-			<div className="absolute inset-0 backdrop-blur-xl" />
+			<div className="absolute inset-0 " />
+			{/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(99,102,241,0.15),transparent_40%)]" />
+			<div className="absolute inset-0 backdrop-blur-xl" /> */}
 
 			<div className="relative mx-auto flex max-w-7xl items-center justify-between border-white/10 border-b px-6 py-4">
 				<Link href="/" className="group flex items-center gap-3">
