@@ -8,23 +8,25 @@ function getConvexUrl() {
   return (import.meta as any).env.VITE_CONVEX_URL!;
 }
 
-let convexQueryClientSingleton: ConvexQueryClient | null = null;
-let queryClientSingleton: QueryClient | null = null;
-let isConnected = false;
+const globalForConvex = globalThis as unknown as {
+  convexQueryClient: ConvexQueryClient | undefined;
+  queryClient: QueryClient | undefined;
+  isConnected: boolean;
+};
 
 export function getConvexQueryClient(): ConvexQueryClient {
-  if (!convexQueryClientSingleton) {
-    convexQueryClientSingleton = new ConvexQueryClient(getConvexUrl(), {
+  if (!globalForConvex.convexQueryClient) {
+    globalForConvex.convexQueryClient = new ConvexQueryClient(getConvexUrl(), {
       expectAuth: true,
     });
   }
-  return convexQueryClientSingleton;
+  return globalForConvex.convexQueryClient;
 }
 
 export function getQueryClient(): QueryClient {
-  if (!queryClientSingleton) {
+  if (!globalForConvex.queryClient) {
     const convexQueryClient = getConvexQueryClient();
-    queryClientSingleton = new QueryClient({
+    globalForConvex.queryClient = new QueryClient({
       defaultOptions: {
         queries: {
           queryKeyHashFn: convexQueryClient.hashFn(),
@@ -33,15 +35,23 @@ export function getQueryClient(): QueryClient {
       },
     });
   }
-  return queryClientSingleton;
+  return globalForConvex.queryClient;
 }
 
 export function connectConvexToQueryClient() {
-  if (!isConnected) {
-    const convexQueryClient = getConvexQueryClient();
-    const queryClient = getQueryClient();
-    convexQueryClient.connect(queryClient);
-    isConnected = true;
+  if (!globalForConvex.isConnected) {
+    try {
+      const convexQueryClient = getConvexQueryClient();
+      const queryClient = getQueryClient();
+      convexQueryClient.connect(queryClient);
+      globalForConvex.isConnected = true;
+    } catch (e) {
+      if (e instanceof Error && e.message.includes("already subscribed")) {
+        globalForConvex.isConnected = true;
+      } else {
+        throw e;
+      }
+    }
   }
 }
 
