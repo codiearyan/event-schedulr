@@ -1,9 +1,9 @@
 "use node";
 
-import { Expo } from "expo-server-sdk";
 import { v } from "convex/values";
-import { action } from "./_generated/server";
+import { Expo } from "expo-server-sdk";
 import { internal } from "./_generated/api";
+import { action } from "./_generated/server";
 
 const expo = new Expo();
 
@@ -17,7 +17,7 @@ export const sendPushNotifications = action({
 	handler: async (ctx, args) => {
 		const tokens: string[] = await ctx.runQuery(
 			internal.participants.getEventPushTokens,
-			{ eventId: args.eventId }
+			{ eventId: args.eventId },
 		);
 
 		const validTokens = tokens.filter((token) => Expo.isExpoPushToken(token));

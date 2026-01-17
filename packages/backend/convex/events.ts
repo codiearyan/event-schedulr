@@ -1,6 +1,14 @@
 import { v } from "convex/values";
+import type { Id } from "./_generated/dataModel";
 
 import { mutation, query } from "./_generated/server";
+
+const eventImageValidator = v.optional(
+	v.object({
+		type: v.union(v.literal("uploaded"), v.literal("preset")),
+		value: v.string(),
+	}),
+);
 
 function getEventStatus(
 	startsAt: number,
@@ -40,7 +48,18 @@ export const getById = query({
 	handler: async (ctx, args) => {
 		const event = await ctx.db.get(args.id);
 		if (!event) return null;
-		return withStatus(event);
+
+		let resolvedImageUrl: string | null = null;
+		if (event.eventImage?.type === "uploaded") {
+			resolvedImageUrl = await ctx.storage.getUrl(
+				event.eventImage.value as Id<"_storage">,
+			);
+		}
+
+		return {
+			...withStatus(event),
+			resolvedImageUrl,
+		};
 	},
 });
 
@@ -55,7 +74,7 @@ export const create = mutation({
 	args: {
 		name: v.string(),
 		description: v.string(),
-		logo: v.optional(v.string()),
+		eventImage: eventImageValidator,
 		startsAt: v.number(),
 		endsAt: v.number(),
 		messageToParticipants: v.optional(v.string()),
@@ -79,7 +98,7 @@ export const create = mutation({
 		const eventId = await ctx.db.insert("events", {
 			name: args.name,
 			description: args.description,
-			logo: args.logo,
+			eventImage: args.eventImage,
 			startsAt: args.startsAt,
 			endsAt: args.endsAt,
 			messageToParticipants: args.messageToParticipants,
@@ -96,7 +115,7 @@ export const update = mutation({
 		id: v.id("events"),
 		name: v.optional(v.string()),
 		description: v.optional(v.string()),
-		logo: v.optional(v.string()),
+		eventImage: eventImageValidator,
 		startsAt: v.optional(v.number()),
 		endsAt: v.optional(v.number()),
 		messageToParticipants: v.optional(v.string()),

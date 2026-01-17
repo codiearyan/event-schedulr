@@ -118,9 +118,13 @@ export const randomizeAvatar = mutation({
 });
 
 function isValidExpoPushToken(token: string): boolean {
-	return /^ExponentPushToken\[[a-zA-Z0-9_-]+\]$/.test(token) ||
+	return (
+		/^ExponentPushToken\[[a-zA-Z0-9_-]+\]$/.test(token) ||
 		/^ExpoPushToken\[[a-zA-Z0-9_-]+\]$/.test(token) ||
-		/^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/.test(token);
+		/^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/.test(
+			token,
+		)
+	);
 }
 
 export const registerPushToken = mutation({

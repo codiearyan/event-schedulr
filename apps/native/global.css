@@ -5,24 +5,24 @@
 @source "./node_modules/heroui-native/lib";
 
 @theme {
-	/* Backgrounds - Dark (neutral with subtle blue tint) */
-	--color-bg-main: #0a0a0f;
-	--color-bg-section: #12121a;
-	--color-bg-card: #1a1a24;
-	--color-bg-input: #14141c;
-	--color-bg-overlay: rgba(0, 0, 0, 0.6);
+	/* Backgrounds - Dark (Deep blue gradient feel matching web) */
+	--color-bg-main: #000000;
+	--color-bg-section: #0a0a1a;
+	--color-bg-card: #101024;
+	--color-bg-input: #0d0d1f;
+	--color-bg-overlay: rgba(0, 0, 0, 0.7);
 
-	/* Primary Accent (Indigo) */
+	/* Primary Accent (Indigo - brighter for dark theme) */
 	--color-primary: #6366f1;
 	--color-primary-bright: #818cf8;
 	--color-primary-dark: #4f46e5;
-	--color-primary-muted: rgba(99, 102, 241, 0.12);
+	--color-primary-muted: rgba(99, 102, 241, 0.15);
 
 	/* Neutrals */
-	--color-text-primary: #e4e4e7;
-	--color-text-muted: #71717a;
-	--color-text-inverse: #0a0a0f;
-	--color-border: #27272a;
+	--color-text-primary: #f4f4f5;
+	--color-text-muted: #a1a1aa;
+	--color-text-inverse: #000000;
+	--color-border: #1e1e3f;
 	--color-border-focus: #6366f1;
 
 	/* Semantic Colors */
@@ -34,11 +34,11 @@
 	--color-warning-muted: rgba(245, 158, 11, 0.15);
 
 	/* Light Theme Colors */
-	--color-light-bg-main: #fafafa;
-	--color-light-bg-section: #ffffff;
-	--color-light-bg-card: #f4f4f5;
+	--color-light-bg-main: #ffffff;
+	--color-light-bg-section: #f8f9fc;
+	--color-light-bg-card: #f0f2f8;
 	--color-light-bg-input: #ffffff;
 	--color-light-text-primary: #18181b;
-	--color-light-text-muted: #71717a;
+	--color-light-text-muted: #52525b;
 	--color-light-border: #e4e4e7;
 }

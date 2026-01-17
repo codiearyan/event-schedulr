@@ -1,12 +1,12 @@
-import AnnouncementsPage from '@/components/announcement'
-import React from 'react'
+import React from "react";
+import AnnouncementsPage from "@/components/announcement";
 
 const page = () => {
-  return (
-    <div>
-        <AnnouncementsPage/>
-    </div>
-  )
-}
+	return (
+		<div>
+			<AnnouncementsPage />
+		</div>
+	);
+};
 
-export default page
+export default page;

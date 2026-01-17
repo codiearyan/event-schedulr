@@ -761,9 +761,7 @@ function GuessLogoResults({
 				<CardContent>
 					{results.leaderboard.length === 0 ? (
 						<p className="py-6 text-center text-muted-foreground">
-							{!isLive
-								? "Waiting for players to join..."
-								: "No scores yet"}
+							{!isLive ? "Waiting for players to join..." : "No scores yet"}
 						</p>
 					) : (
 						<div className="space-y-2">
@@ -784,7 +782,9 @@ function GuessLogoResults({
 															: "bg-muted"
 											}`}
 										>
-											{isLive ? entry.rank : entry.participantName.charAt(0).toUpperCase()}
+											{isLive
+												? entry.rank
+												: entry.participantName.charAt(0).toUpperCase()}
 										</div>
 										<div>
 											<span className="font-medium">
@@ -795,9 +795,7 @@ function GuessLogoResults({
 													{entry.correctCount} correct
 												</p>
 											) : (
-												<p className="text-muted-foreground text-xs">
-													Ready
-												</p>
+												<p className="text-muted-foreground text-xs">Ready</p>
 											)}
 										</div>
 									</div>

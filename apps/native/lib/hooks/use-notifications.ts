@@ -1,13 +1,13 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import * as Notifications from "expo-notifications";
+import { api } from "@event-schedulr/backend/convex/_generated/api";
+import type { Id } from "@event-schedulr/backend/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import Constants from "expo-constants";
 import * as Device from "expo-device";
 import * as Linking from "expo-linking";
-import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
-import { useMutation } from "convex/react";
-import { api } from "@event-schedulr/backend/convex/_generated/api";
 import { useParticipant } from "@/contexts/participant-context";
-import { Id } from "@event-schedulr/backend/convex/_generated/dataModel";
 
 type ParticipantId = Id<"participants">;
 
@@ -33,9 +33,7 @@ export function useNotifications() {
 	const notificationListener = useRef<Notifications.EventSubscription | null>(
 		null,
 	);
-	const responseListener = useRef<Notifications.EventSubscription | null>(
-		null,
-	);
+	const responseListener = useRef<Notifications.EventSubscription | null>(null);
 
 	const openSettings = useCallback(async () => {
 		setShowSettingsModal(false);
@@ -54,14 +52,14 @@ export function useNotifications() {
 			if (status === "denied") {
 				setShowSettingsModal(true);
 			} else if (status !== "granted") {
-				Notifications.requestPermissionsAsync().then(
-					({ status: newStatus }) => {
+				Notifications.requestPermissionsAsync()
+					.then(({ status: newStatus }) => {
 						setPermissionStatus(newStatus);
 						if (newStatus === "denied") {
 							setShowSettingsModal(true);
 						}
-					},
-				).catch(() => console.log("Permission request failed"));
+					})
+					.catch(() => console.log("Permission request failed"));
 			}
 		});
 
@@ -186,9 +184,8 @@ async function registerForPushNotificationsAsync() {
 				Constants?.easConfig?.projectId;
 			if (!projectId) throw new Error("Project ID not found");
 
-			const token = (
-				await Notifications.getExpoPushTokenAsync({ projectId })
-			).data;
+			const token = (await Notifications.getExpoPushTokenAsync({ projectId }))
+				.data;
 			console.log("Expo Push Token:", token);
 			return token;
 		} catch (e: any) {

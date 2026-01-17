@@ -26,6 +26,14 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { getPresetById } from "@/lib/event-graphics";
+
+function getPresetBackground(presetId: string): string {
+	const preset = getPresetById(presetId);
+	return (
+		preset?.background || "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+	);
+}
 
 interface EventDetailsModalProps {
 	eventId: Id<"events">;
@@ -52,7 +60,7 @@ export function EventDetailsModal({
 	const generateQRCode = async (code: string) => {
 		try {
 			const { default: QRCode } = await import("qrcode");
-			const magicLink = `${process.env.NEXT_PUBLIC_CONVEX_URL}?code=${code}`;
+			const magicLink = `${window.location.origin}/join?code=${code}`;
 			const dataUrl = await QRCode.toDataURL(magicLink, {
 				width: 400,
 				margin: 2,
@@ -70,7 +78,7 @@ export function EventDetailsModal({
 	};
 
 	const handleCopyMagicLink = (code: string) => {
-		const magicLink = `${process.env.NEXT_PUBLIC_CONVEX_SITE_URL}?code=${code}`;
+		const magicLink = `${window.location.origin}/join?code=${code}`;
 		navigator.clipboard.writeText(magicLink);
 		toast.success("Magic link copied to clipboard!");
 	};
@@ -159,11 +167,20 @@ export function EventDetailsModal({
 					<div className="flex items-start justify-between">
 						<div className="flex-1">
 							<div className="flex items-center gap-3">
-								{event.logo && (
-									<img
-										src={event.logo}
-										alt={event.name}
-										className="h-16 w-16 rounded-lg object-cover"
+								{event.eventImage?.type === "uploaded" &&
+									event.resolvedImageUrl && (
+										<img
+											src={event.resolvedImageUrl}
+											alt={event.name}
+											className="h-16 w-16 rounded-lg object-cover"
+										/>
+									)}
+								{event.eventImage?.type === "preset" && (
+									<div
+										className="h-16 w-16 rounded-lg"
+										style={{
+											background: getPresetBackground(event.eventImage.value),
+										}}
 									/>
 								)}
 								<div className="flex-1">

@@ -13,6 +13,7 @@ import type * as announcements from "../announcements.js";
 import type * as auth from "../auth.js";
 import type * as chatMessages from "../chatMessages.js";
 import type * as events from "../events.js";
+import type * as files from "../files.js";
 import type * as guessLogo from "../guessLogo.js";
 import type * as healthCheck from "../healthCheck.js";
 import type * as http from "../http.js";
@@ -35,6 +36,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   chatMessages: typeof chatMessages;
   events: typeof events;
+  files: typeof files;
   guessLogo: typeof guessLogo;
   healthCheck: typeof healthCheck;
   http: typeof http;

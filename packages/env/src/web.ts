@@ -6,6 +6,7 @@ export const env = createEnv({
 	client: {
 		NEXT_PUBLIC_CONVEX_URL: z.url(),
 		NEXT_PUBLIC_CONVEX_SITE_URL: z.url(),
+		NEXT_PUBLIC_EXPO_DEV_URL: z.string().optional(),
 	},
 	runtimeEnv: (import.meta as any).env,
 	emptyStringAsUndefined: true,

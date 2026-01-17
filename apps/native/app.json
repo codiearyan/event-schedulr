@@ -1,7 +1,7 @@
 {
 	"expo": {
 		"name": "EventSchedulr",
-		"slug": "event-schedulr",
+		"slug": "eventschedulr",
 		"version": "1.0.0",
 		"scheme": "eventschedulr",
 		"userInterfaceStyle": "automatic",
@@ -36,7 +36,11 @@
 				"backgroundColor": "#0a0a0f",
 				"resizeMode": "contain"
 			},
-			"permissions": ["CAMERA"]
+			"permissions": [
+				"CAMERA",
+				"android.permission.CAMERA",
+				"android.permission.RECORD_AUDIO"
+			]
 		},
 		"plugins": [
 			"expo-font",
@@ -54,8 +58,9 @@
 		},
 		"extra": {
 			"eas": {
-				"projectId": "your-project-id"
+				"projectId": "45e2e270-cff3-4808-8a79-cb9e94fa0376"
 			}
-		}
+		},
+		"owner": "codiearyan"
 	}
 }

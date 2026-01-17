@@ -274,5 +274,7 @@ function GuessLogoActivityWrapper({
 		);
 	}
 
-	return <GuessLogoActivity activity={activity} participantId={participantId} />;
+	return (
+		<GuessLogoActivity activity={activity} participantId={participantId} />
+	);
 }

@@ -17,7 +17,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
 	FadeIn,
 	FadeInDown,
-	FadeInUp,
 	useAnimatedStyle,
 	useSharedValue,
 	withSpring,
@@ -26,75 +25,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "@/constants/colors";
 import { useParticipant } from "@/contexts/participant-context";
 
-const AVATAR_STYLES = [
-	"adventurer",
-	"adventurer-neutral",
-	"avataaars",
-	"big-ears",
-	"bottts",
-	"fun-emoji",
-	"lorelei",
-	"notionists",
-];
-
-function generateAvatarUrl(seed: string, style = "adventurer"): string {
-	return `https://api.dicebear.com/9.x/${style}/png?seed=${seed}&size=200`;
+function generateAvatarUrl(seed: string): string {
+	return `https://api.dicebear.com/9.x/adventurer/png?seed=${seed}&size=200`;
 }
 
 function generateRandomSeed(): string {
 	return Math.random().toString(36).substring(2, 12);
-}
-
-type AvatarOptionProps = {
-	seed: string;
-	style: string;
-	isSelected: boolean;
-	onSelect: () => void;
-	index: number;
-};
-
-function AvatarOption({
-	seed,
-	style,
-	isSelected,
-	onSelect,
-	index,
-}: AvatarOptionProps) {
-	const scale = useSharedValue(1);
-
-	const animatedStyle = useAnimatedStyle(() => ({
-		transform: [{ scale: scale.value }],
-	}));
-
-	const handlePress = () => {
-		scale.value = withSpring(0.9, {}, () => {
-			scale.value = withSpring(1);
-		});
-		if (Platform.OS === "ios") {
-			Haptics.selectionAsync();
-		}
-		onSelect();
-	};
-
-	return (
-		<Animated.View
-			entering={FadeInUp.delay(200 + index * 50).duration(400)}
-			style={animatedStyle}
-		>
-			<Pressable onPress={handlePress}>
-				<View
-					className={`h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border-2 ${
-						isSelected ? "border-primary" : "border-transparent"
-					}`}
-				>
-					<Image
-						source={{ uri: generateAvatarUrl(seed, style) }}
-						className="h-14 w-14 rounded-xl bg-bg-card"
-					/>
-				</View>
-			</Pressable>
-		</Animated.View>
-	);
 }
 
 export default function ProfileSetupScreen() {
@@ -114,7 +50,6 @@ export default function ProfileSetupScreen() {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [avatarSeed, setAvatarSeed] = useState(generateRandomSeed());
-	const [selectedStyle, setSelectedStyle] = useState(AVATAR_STYLES[0]);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
 
@@ -137,9 +72,6 @@ export default function ProfileSetupScreen() {
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 		}
 		setAvatarSeed(generateRandomSeed());
-		setSelectedStyle(
-			AVATAR_STYLES[Math.floor(Math.random() * AVATAR_STYLES.length)],
-		);
 	}, [diceRotation]);
 
 	const validate = (): boolean => {
@@ -172,7 +104,7 @@ export default function ProfileSetupScreen() {
 		setIsSubmitting(true);
 
 		try {
-			const fullAvatarSeed = `${avatarSeed}-${selectedStyle}`;
+			const fullAvatarSeed = `${avatarSeed}-adventurer`;
 			const participant = await joinEvent({
 				eventId: params.eventId as Id<"events">,
 				name: name.trim(),
@@ -250,48 +182,32 @@ export default function ProfileSetupScreen() {
 			<ScrollView>
 				<Animated.View
 					entering={FadeInDown.delay(200).duration(500)}
-					className="mb-6 items-center"
+					className="mb-8 items-center"
 				>
 					<View className="relative">
 						<Image
-							source={{ uri: generateAvatarUrl(avatarSeed, selectedStyle) }}
-							className="h-28 w-28 rounded-3xl bg-bg-card"
+							source={{ uri: generateAvatarUrl(avatarSeed) }}
+							className="h-40 w-40 rounded-[32px] bg-bg-card"
 						/>
 						<Animated.View
 							style={diceAnimatedStyle}
-							className="absolute -right-2 -bottom-2"
+							className="absolute -right-1 -bottom-1"
 						>
 							<Pressable
 								onPress={handleRandomize}
-								className="h-10 w-10 items-center justify-center rounded-full bg-primary active:opacity-80"
+								className="h-12 w-12 items-center justify-center rounded-full bg-primary active:opacity-80"
 							>
-								<Ionicons name="dice" size={20} color={colors.text.inverse} />
+								<Ionicons name="dice" size={24} color={colors.text.inverse} />
 							</Pressable>
 						</Animated.View>
 					</View>
+					<Text className="mt-4 text-center text-sm text-text-muted">
+						Tap the dice to get a new avatar
+					</Text>
 				</Animated.View>
 
 				<Animated.View
 					entering={FadeInDown.delay(300).duration(500)}
-					className="mb-6"
-				>
-					<Text className="mb-3 text-sm text-text-muted">Choose a style</Text>
-					<View className="flex-row flex-wrap justify-center gap-2">
-						{AVATAR_STYLES.map((style, index) => (
-							<AvatarOption
-								key={style}
-								seed={avatarSeed}
-								style={style}
-								isSelected={selectedStyle === style}
-								onSelect={() => setSelectedStyle(style)}
-								index={index}
-							/>
-						))}
-					</View>
-				</Animated.View>
-
-				<Animated.View
-					entering={FadeInDown.delay(400).duration(500)}
 					className="gap-4"
 				>
 					<View>
