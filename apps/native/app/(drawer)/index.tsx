@@ -29,7 +29,7 @@ export default function Home() {
 		<Container className="p-4">
 			<View className="mb-4 py-6">
 				<Text className="font-semibold text-3xl text-foreground tracking-tight">
-					Better T Stack
+					Event Schedulr
 				</Text>
 				<Text className="mt-1 text-muted text-sm">
 					Full-stack TypeScript starter
@@ -44,7 +44,7 @@ export default function Home() {
 							<Text className="mt-0.5 text-muted text-xs">{user.email}</Text>
 						</View>
 						<Button
-							variant="destructive"
+							variant="danger"
 							size="sm"
 							onPress={() => {
 								authClient.signOut();
