@@ -183,7 +183,7 @@ function AdminRoute() {
 					<div className="flex items-center gap-4">
 						<span className="text-muted-foreground text-sm">Event Status:</span>
 						<Select value={event.status} onValueChange={handleStatusChange}>
-							<SelectTrigger className="w-[140px]">
+							<SelectTrigger className="w-35">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
@@ -212,7 +212,7 @@ function AdminRoute() {
 									setAnnouncementType(v as AnnouncementType)
 								}
 							>
-								<SelectTrigger className="w-[120px]">
+								<SelectTrigger className="w-30">
 									<SelectValue />
 								</SelectTrigger>
 								<SelectContent>
@@ -235,7 +235,7 @@ function AdminRoute() {
 							value={message}
 							onChange={(e) => setMessage(e.target.value)}
 							placeholder="Type your announcement here... (e.g., 'Lunch break in 5 minutes!')"
-							className="min-h-[100px]"
+							className="min-h-25"
 						/>
 						<Button type="submit" disabled={!message.trim()} className="w-full">
 							<Megaphone className="mr-2 h-4 w-4" />
