@@ -1,7 +1,6 @@
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
 import type { ConvexQueryClient } from "@convex-dev/react-query";
 import type { QueryClient } from "@tanstack/react-query";
-import { ConvexProvider } from "convex/react";
 import {
   createRootRouteWithContext,
   HeadContent,
@@ -15,6 +14,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { Toaster } from "@/components/ui/sonner";
 import { authClient } from "@/lib/auth-client";
 import { getToken } from "@/lib/auth-server";
+import { getConvexClient } from "../router";
 
 import Header from "../components/header";
 import appCss from "../index.css?url";
@@ -65,28 +65,28 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 
 function RootDocument() {
   const context = useRouteContext({ from: Route.id });
+  const convexClient = getConvexClient();
+
   return (
     <ConvexBetterAuthProvider
-      client={context.convexQueryClient.convexClient}
+      client={convexClient}
       authClient={authClient}
       initialToken={context.token}
     >
-      <ConvexProvider client={context.convexQueryClient.convexClient}>
-        <html lang="en" className="dark">
-          <head>
-            <HeadContent />
-          </head>
-          <body>
-            <div className="grid h-svh grid-rows-[auto_1fr]">
-              <Header />
-              <Outlet />
-            </div>
-            <Toaster richColors />
-            <TanStackRouterDevtools position="bottom-left" />
-            <Scripts />
-          </body>
-        </html>
-      </ConvexProvider>
+      <html lang="en" className="dark">
+        <head>
+          <HeadContent />
+        </head>
+        <body>
+          <div className="grid h-svh grid-rows-[auto_1fr]">
+            <Header />
+            <Outlet />
+          </div>
+          <Toaster richColors />
+          <TanStackRouterDevtools position="bottom-left" />
+          <Scripts />
+        </body>
+      </html>
     </ConvexBetterAuthProvider>
   );
 }
