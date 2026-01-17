@@ -6,7 +6,7 @@ import { useQuery } from "convex/react";
 import { ArrowRight, PlusIcon, QrCode, Users } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 async function loadImageAsDataUrl(url: string): Promise<string | null> {
@@ -250,10 +250,11 @@ function EmptyState({ type }: { type: "upcoming" | "past" }) {
 	);
 }
 
-export default function EventsPage() {
-	const events = useQuery(api.events.getAll);
-	const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
-
+function LandingRedirectHandler({
+	events,
+}: {
+	events: EventWithStatus[] | undefined;
+}) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const hasRedirected = useRef(false);
@@ -271,6 +272,13 @@ export default function EventsPage() {
 			}
 		}
 	}, [fromLanding, events, currentEvent, router]);
+
+	return null;
+}
+
+export default function EventsPage() {
+	const events = useQuery(api.events.getAll);
+	const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
 
 	if (events === undefined) {
 		return (
@@ -294,6 +302,9 @@ export default function EventsPage() {
 
 	return (
 		<div className="mx-auto max-w-5xl px-6 text-white">
+			<Suspense fallback={null}>
+				<LandingRedirectHandler events={events} />
+			</Suspense>
 			<div className="flex items-center justify-between py-8">
 				<h1 className="font-bold text-4xl">Events</h1>
 
