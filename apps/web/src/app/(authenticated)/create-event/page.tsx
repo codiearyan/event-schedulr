@@ -32,17 +32,18 @@ export default function CreateEventPage() {
 
 function CreateEventSkeleton() {
 	return (
-		<div className="min-h-screen w-full bg-bg-main text-white">
-			<div className="mx-auto w-full max-w-4xl space-y-6 px-4 py-10">
-				<div className="flex gap-6">
-					<div className="w-72 animate-pulse">
-						<div className="aspect-square rounded-xl bg-white/10" />
-					</div>
-					<div className="flex-1 animate-pulse space-y-4">
-						<div className="h-16 rounded-xl bg-white/10" />
-						<div className="h-32 rounded-xl bg-white/10" />
-						<div className="h-24 rounded-xl bg-white/10" />
-					</div>
+		<div className="mx-auto max-w-5xl px-6 text-white">
+			<div className="py-8">
+				<div className="h-10 w-48 animate-pulse rounded bg-white/10" />
+			</div>
+			<div className="flex gap-6">
+				<div className="w-72 animate-pulse">
+					<div className="aspect-square rounded-xl bg-white/10" />
+				</div>
+				<div className="flex-1 animate-pulse space-y-4">
+					<div className="h-16 rounded-xl bg-white/10" />
+					<div className="h-32 rounded-xl bg-white/10" />
+					<div className="h-24 rounded-xl bg-white/10" />
 				</div>
 			</div>
 		</div>
@@ -227,9 +228,15 @@ function CreateEventContent() {
 	};
 
 	return (
-		<div className="h-auto w-full text-white">
-			<form onSubmit={handleSubmit} className="space-y-6">
-				<div className="mt-5 flex w-full justify-center gap-6 px-4">
+		<div className="mx-auto max-w-5xl px-6 text-white">
+			<div className="flex items-center justify-between py-8">
+				<h1 className="font-bold text-4xl">
+					{isEditMode ? "Edit Event" : "Create Event"}
+				</h1>
+			</div>
+
+			<form onSubmit={handleSubmit} className="pb-16">
+				<div className="flex gap-6">
 					<div className="w-72 flex-shrink-0 space-y-4">
 						<EventImagePicker
 							value={eventImage}
