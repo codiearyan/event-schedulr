@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 
-import { mutation, query } from "./_generated/server";
+import { internalQuery, mutation, query } from "./_generated/server";
 
 function generateAvatarSeed(): string {
 	return Math.random().toString(36).substring(2, 15);
@@ -114,5 +114,45 @@ export const randomizeAvatar = mutation({
 		const newSeed = generateAvatarSeed();
 		await ctx.db.patch(args.id, { avatarSeed: newSeed });
 		return { avatarSeed: newSeed };
+	},
+});
+
+function isValidExpoPushToken(token: string): boolean {
+	return /^ExponentPushToken\[[a-zA-Z0-9_-]+\]$/.test(token) ||
+		/^ExpoPushToken\[[a-zA-Z0-9_-]+\]$/.test(token) ||
+		/^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/.test(token);
+}
+
+export const registerPushToken = mutation({
+	args: {
+		participantId: v.id("participants"),
+		expoPushToken: v.string(),
+	},
+	handler: async (ctx, args) => {
+		if (!isValidExpoPushToken(args.expoPushToken)) {
+			throw new Error("Invalid Expo push token");
+		}
+
+		await ctx.db.patch(args.participantId, {
+			expoPushToken: args.expoPushToken,
+		});
+
+		return { success: true };
+	},
+});
+
+export const getEventPushTokens = internalQuery({
+	args: {
+		eventId: v.id("events"),
+	},
+	handler: async (ctx, args) => {
+		const participants = await ctx.db
+			.query("participants")
+			.withIndex("by_event", (q) => q.eq("eventId", args.eventId))
+			.collect();
+
+		return participants
+			.filter((p) => p.expoPushToken)
+			.map((p) => p.expoPushToken!);
 	},
 });
