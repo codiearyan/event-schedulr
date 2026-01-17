@@ -49,23 +49,18 @@
 // }
 
 import { createRouter } from "@tanstack/react-router";
-import { QueryClient } from "@tanstack/react-query";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 import { routeTree } from "./routeTree.gen";
-import { getConvexQueryClient } from "./lib/convex-client";
+import {
+  getConvexQueryClient,
+  getQueryClient,
+  connectConvexToQueryClient,
+} from "./lib/convex-client";
 
 export function getRouter() {
   const convexQueryClient = getConvexQueryClient();
-
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        queryKeyHashFn: convexQueryClient.hashFn(),
-        queryFn: convexQueryClient.queryFn(),
-      },
-    },
-  });
-  convexQueryClient.connect(queryClient);
+  const queryClient = getQueryClient();
+  connectConvexToQueryClient();
 
   const router = createRouter({
     routeTree,
