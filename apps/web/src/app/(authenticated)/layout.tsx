@@ -6,7 +6,7 @@ export default function AuthenticatedLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<div className="eve h-screen">
+		<div className="eve h-fit">
 			<AuthenticatedHeader />
 			{children}
 		</div>
