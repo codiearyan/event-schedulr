@@ -13,6 +13,7 @@ import { createServerFn } from "@tanstack/react-start";
 
 import { Toaster } from "@/components/ui/sonner";
 import { authClient } from "@/lib/auth-client";
+import { getConvexClient, getConvexQueryClient } from "@/lib/convex-client";
 import { getToken } from "@/lib/auth-server";
 
 import appCss from "../index.css?url";
@@ -49,10 +50,11 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   }),
 
   component: RootDocument,
-  beforeLoad: async (ctx) => {
+  beforeLoad: async () => {
     const token = await getAuth();
-    if (token) {
-      ctx.context.convexQueryClient.serverHttpClient?.setAuth(token);
+    if (token && typeof window === "undefined") {
+      const convexQueryClient = getConvexQueryClient();
+      convexQueryClient.serverHttpClient?.setAuth(token);
     }
     return {
       isAuthenticated: !!token,
@@ -65,7 +67,7 @@ function RootDocument() {
   const context = useRouteContext({ from: Route.id });
   return (
     <ConvexBetterAuthProvider
-      client={context.convexQueryClient.convexClient}
+      client={getConvexClient()}
       authClient={authClient}
       initialToken={context.token}
     >
