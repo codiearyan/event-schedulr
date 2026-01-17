@@ -20,6 +20,7 @@ import type * as liveActivities from "../liveActivities.js";
 import type * as notifications from "../notifications.js";
 import type * as participants from "../participants.js";
 import type * as privateData from "../privateData.js";
+import type * as schedule from "../schedule.js";
 import type * as todos from "../todos.js";
 
 import type {
@@ -41,6 +42,7 @@ declare const fullApi: ApiFromModules<{
   notifications: typeof notifications;
   participants: typeof participants;
   privateData: typeof privateData;
+  schedule: typeof schedule;
   todos: typeof todos;
 }>;
 
