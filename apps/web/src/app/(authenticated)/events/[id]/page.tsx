@@ -114,7 +114,7 @@ function EventDetailContent() {
 						<h1 className="font-bold text-3xl">{event.name}</h1>
 					)}
 
-					<a
+					{/* <a
 						href={publicEventUrl}
 						target="_blank"
 						rel="noopener noreferrer"
@@ -122,7 +122,7 @@ function EventDetailContent() {
 					>
 						Event Page
 						<ArrowUpRight size={14} />
-					</a>
+					</a> */}
 				</div>
 			</div>
 
