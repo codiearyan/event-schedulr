@@ -66,12 +66,12 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 function RootDocument() {
   const context = useRouteContext({ from: Route.id });
   return (
-    <ConvexProvider client={context.convexQueryClient.convexClient}>
-      <ConvexBetterAuthProvider
-        client={context.convexQueryClient.convexClient}
-        authClient={authClient}
-        initialToken={context.token}
-      >
+    <ConvexBetterAuthProvider
+      client={context.convexQueryClient.convexClient}
+      authClient={authClient}
+      initialToken={context.token}
+    >
+      <ConvexProvider client={context.convexQueryClient.convexClient}>
         <html lang="en" className="dark">
           <head>
             <HeadContent />
@@ -86,7 +86,7 @@ function RootDocument() {
             <Scripts />
           </body>
         </html>
-      </ConvexBetterAuthProvider>
-    </ConvexProvider>
+      </ConvexProvider>
+    </ConvexBetterAuthProvider>
   );
 }
