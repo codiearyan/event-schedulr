@@ -25,6 +25,7 @@ export function SignUp() {
 				onError: (error) => {
 					setError(error.error?.message || "Failed to sign up");
 					setIsLoading(false);
+					console.log(error);
 				},
 				onSuccess: () => {
 					setName("");
