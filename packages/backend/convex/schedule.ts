@@ -53,7 +53,7 @@ export const createSession = mutation({
     }
 })
 
-//get all session by event (sorted by time)
+//get all session by event (sorted by time) All session
 export const getSessionsByEvent = query({
     args: {
         eventId: v.id("events")
@@ -160,7 +160,7 @@ export const updateSessionStatus = mutation({
 })
 
 
-// get current and upcmming session
+// get current and upcmming session (All ongoing + upcoming)
 export const getCurrentAndUpcomingSessions = query({
     args: {
         eventId: v.id("events")
@@ -190,3 +190,44 @@ export const getCurrentAndUpcomingSessions = query({
     }
 })
 
+export const getCurrentSession = query({
+    args: {
+        eventId: v.id("events"),
+    },
+    handler: async (ctx, args) => {
+        const now = Date.now();
+
+        const sessions = await ctx.db
+            .query("sessions")
+            .withIndex("by_event", (q) => q.eq("eventId", args.eventId))
+            .collect();
+
+        // Find session where startTime <= now <= endTime
+        const currentSession = sessions.find(
+            (session) => session.startTime <= now && session.endTime >= now
+        );
+
+        return currentSession || null;
+    },
+});
+
+export const getNextUpcomingSession = query({
+    args: {
+        eventId: v.id("events"),
+    },
+    handler: async (ctx, args) => {
+        const now = Date.now();
+
+        const sessions = await ctx.db
+            .query("sessions")
+            .withIndex("by_event", (q) => q.eq("eventId", args.eventId))
+            .collect();
+
+        // Filter only upcoming sessions, sort by startTime, return first one
+        const upcoming = sessions
+            .filter((session) => session.startTime > now)
+            .sort((a, b) => a.startTime - b.startTime);
+
+        return upcoming[0] || null;
+    },
+});
