@@ -1,45 +1,64 @@
 import "@/global.css";
-import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
 import { env } from "@event-schedulr/env/native";
-import { ConvexReactClient } from "convex/react";
+import { ConvexReactClient, ConvexProvider } from "convex/react";
 import { Stack } from "expo-router";
+import { useEffect } from "react";
+import * as SplashScreen from "expo-splash-screen";
 import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 
 import { AppThemeProvider } from "@/contexts/app-theme-context";
-import { authClient } from "@/lib/auth-client";
+import { ParticipantProvider, useParticipant } from "@/contexts/participant-context";
 
-export const unstable_settings = {
-  initialRouteName: "(drawer)",
-};
+SplashScreen.preventAutoHideAsync();
 
 const convex = new ConvexReactClient(env.EXPO_PUBLIC_CONVEX_URL, {
-  unsavedChangesWarning: false,
+	unsavedChangesWarning: false,
 });
 
 function StackLayout() {
-  return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
-  );
+	const { isLoading, isAuthenticated } = useParticipant();
+
+	useEffect(() => {
+		if (!isLoading) {
+			SplashScreen.hideAsync();
+		}
+	}, [isLoading]);
+
+	if (isLoading) {
+		return null;
+	}
+
+	return (
+		<Stack screenOptions={{ headerShown: false }}>
+			<Stack.Protected guard={isAuthenticated}>
+				<Stack.Screen name="(tabs)" />
+			</Stack.Protected>
+
+			<Stack.Protected guard={!isAuthenticated}>
+				<Stack.Screen name="(auth)" />
+			</Stack.Protected>
+
+			<Stack.Screen name="+not-found" />
+		</Stack>
+	);
 }
 
 export default function Layout() {
-  return (
-    <ConvexBetterAuthProvider client={convex} authClient={authClient}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <KeyboardProvider>
-          <AppThemeProvider>
-            <HeroUINativeProvider>
-              <StackLayout />
-            </HeroUINativeProvider>
-          </AppThemeProvider>
-        </KeyboardProvider>
-      </GestureHandlerRootView>
-    </ConvexBetterAuthProvider>
-  );
+	return (
+		<ConvexProvider client={convex}>
+			<GestureHandlerRootView style={{ flex: 1 }}>
+				<KeyboardProvider>
+					<ParticipantProvider>
+						<AppThemeProvider>
+							<HeroUINativeProvider>
+								<StackLayout />
+							</HeroUINativeProvider>
+						</AppThemeProvider>
+					</ParticipantProvider>
+				</KeyboardProvider>
+			</GestureHandlerRootView>
+		</ConvexProvider>
+	);
 }
