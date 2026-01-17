@@ -29,17 +29,12 @@ export default function UserMenu() {
       <DropdownMenuTrigger>
         <Button
           variant="ghost"
-          className="flex items-center gap-2 rounded-full px-3 py-6 cursor-pointer hover:bg-white/10 transition-colors"
+          className="flex items-center gap-2 rounded-full cursor-pointer duration-200"
         >
           {/* Avatar */}
-          <div className="h-8 w-8 rounded-full bg-linear-to-br from-primary to-indigo-600 flex items-center justify-center text-sm font-semibold text-white">
+          <div className="h-10 w-10 hover:from-primary-dark active:scale-95 transition-all ease-in-out duration-100 hover:to-primary-bright rounded-full bg-linear-to-br from-primary to-indigo-600 flex items-center justify-center text-sm font-semibold text-white">
             {user.name?.[0]?.toUpperCase()}
           </div>
-
-          {/* Name */}
-          <span className="hidden sm:block text-sm font-medium text-white/90">
-            {user.name}
-          </span>
         </Button>
       </DropdownMenuTrigger>
 

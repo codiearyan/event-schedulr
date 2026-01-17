@@ -1,9 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single+Ink:wght@100..900&family=Geist:wght@700&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&family=Playwrite+IT+Moderna:wght@100..400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Stack+Sans+Notch:wght@200..700&family=Story+Script&family=Tektur:wght@400..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Winky+Rough:ital,wght@0,300..900;1,300..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single+Ink:wght@100..900&family=Faculty+Glyphic&family=Geist:wght@700&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&family=Playwrite+IT+Moderna:wght@100..400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Stack+Sans+Notch:wght@200..700&family=Story+Script&family=Tektur:wght@400..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Winky+Rough:ital,wght@0,300..900;1,300..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
-
 
 * {
   font-family: "Inter", sans-serif;
+}
+
+
+
+input{
+    font-family: "Faculty Glyphic", sans-serif;
+}
+input:focus {
+    outline: none; 
+    border-width: 0px; 
+}
+
+textarea{
+   font-family: "Faculty Glyphic", sans-serif;
+    outline: none; 
+    border-width: 0px; 
 }
 
 @theme {
@@ -15,9 +31,9 @@
   --color-bg-overlay: rgba(0, 0, 0, 0.6);
 
   /* Primary Accent (Indigo) */
-  --color-primary: #6366F1;
-  --color-primary-bright: #818CF8;
-  --color-primary-dark: #4F46E5;
+  --color-primary: #6366f1;
+  --color-primary-bright: #818cf8;
+  --color-primary-dark: #4f46e5;
   --color-primary-muted: rgba(99, 102, 241, 0.12);
 
   /* Neutrals */
@@ -25,7 +41,7 @@
   --color-text-muted: #71717a;
   --color-text-inverse: #0a0a0f;
   --color-border: #27272a;
-  --color-border-focus: #6366F1;
+  --color-border-focus: #6366f1;
 
   /* Semantic Colors */
   --color-success: #22c55e;
@@ -48,6 +64,7 @@
 
 :root {
   /* Updated color scheme with teal primary and modern aesthetics */
+  --font-input:font-family: "Faculty Glyphic", sans-serif;
   --background: oklch(0.98 0.01 220);
   --foreground: oklch(0.1 0.02 220);
   --card: oklch(1 0 0);
@@ -118,14 +135,26 @@
   --sidebar-ring: oklch(0.6 0.17 190);
 }
 
-
-.back{
+.back {
   height: 100vh;
   background: radial-gradient(
-  circle at center,
-  rgba(0, 255, 255, 0.18) 0%,
-  rgba(0, 255, 255, 0.12) 25%,
-  rgba(0, 255, 255, 0.06) 45%,
-  rgba(0, 0, 0, 0) 70%
-);
+    circle at center,
+    rgba(0, 255, 255, 0.18) 0%,
+    rgba(0, 255, 255, 0.12) 25%,
+    rgba(0, 255, 255, 0.06) 45%,
+    rgba(0, 0, 0, 0) 70%
+  );
+}
+
+.eve{
+background: radial-gradient(125% 125% at 50% 100%, #000000 40%, #010133 100%)
+}
+
+.text-gradient {
+  color: #1a56ba;
+  background-image: linear-gradient(45deg, #1a56ba 29%, #292a78 8%, #7c7ce6 200%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }

@@ -6,7 +6,7 @@ export default function AuthenticatedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid h-svh grid-rows-[auto_1fr]">
+    <div className="h-screen eve">
       <AuthenticatedHeader />
       {children}
     </div>
