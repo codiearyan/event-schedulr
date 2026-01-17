@@ -48,6 +48,7 @@
 // }
 
 import { api } from "@event-schedulr/backend/convex/_generated/api";
+import { Link } from "@tanstack/react-router";
 import { useQuery } from "convex/react";
 
 import {
@@ -118,11 +119,13 @@ export default function UserMenu() {
 
           <DropdownMenuSeparator className="bg-white/10" />
 
-          {/* Profile (future-ready) */}
-          <DropdownMenuItem className="gap-2 text-white/80 focus:bg-white/10 focus:text-white cursor-pointer">
-            <User className="h-4 w-4" />
-            Profile
-          </DropdownMenuItem>
+          {/* Profile */}
+          <Link to="/profile">
+            <DropdownMenuItem className="gap-2 text-white/80 focus:bg-white/10 focus:text-white cursor-pointer">
+              <User className="h-4 w-4" />
+              Profile
+            </DropdownMenuItem>
+          </Link>
 
           <DropdownMenuSeparator className="bg-white/10" />
 
