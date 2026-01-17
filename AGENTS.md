@@ -237,12 +237,16 @@ event-schedulr/
 - Shared auth configuration in `packages/backend/convex/auth.ts`
 - Client-side auth utilities in respective `lib/auth-client.ts` files
 
-### Adding UI Components (Web)
+### UI Components
+
+**Web (apps/web)**: Always prefer **shadcn/ui** components for building UI. Before creating custom components, check if a shadcn component exists that can be used or composed.
 
 ```bash
 cd apps/web
 pnpm dlx shadcn@latest add <component-name>
 ```
+
+**Native (apps/native)**: Use **heroui-native** components with **uniwind** for styling.
 
 ### Convex Functions
 
