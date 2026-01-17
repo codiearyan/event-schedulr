@@ -88,6 +88,8 @@ export default function ScanQRScreen() {
 		({ data }: { data: string }) => {
 			if (isProcessing || scannedCode) return;
 
+			console.log("Raw QR data:", data);
+
 			if (Platform.OS === "ios") {
 				Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 			}
@@ -97,6 +99,8 @@ export default function ScanQRScreen() {
 
 			const urlMatch = data.match(/[?&]code=([A-Z0-9]+)/i);
 			const code = urlMatch ? urlMatch[1] : data;
+
+			console.log("Extracted code:", code.toUpperCase());
 
 			setScannedCode(code.toUpperCase());
 		},
@@ -242,9 +246,26 @@ export default function ScanQRScreen() {
 							<Text className="text-sm text-white">Validating...</Text>
 						</View>
 					) : error ? (
-						<View className="mb-4 flex-row items-center gap-2 rounded-xl bg-error/80 px-4 py-3">
-							<Ionicons name="alert-circle" size={18} color="#ffffff" />
-							<Text className="text-sm text-white">{error}</Text>
+						<View className="mb-4 items-center rounded-xl bg-error/80 px-4 py-3">
+							<View className="flex-row items-center gap-2">
+								<Ionicons name="alert-circle" size={18} color="#ffffff" />
+								<Text className="text-sm text-white">{error}</Text>
+							</View>
+							{scannedCode && (
+								<Text className="mt-1 text-white/70 text-xs">
+									Scanned: {scannedCode}
+								</Text>
+							)}
+							<Pressable
+								onPress={() => {
+									setError(null);
+									setScannedCode(null);
+									setIsProcessing(false);
+								}}
+								className="mt-2 rounded-lg bg-white/20 px-4 py-2"
+							>
+								<Text className="text-sm text-white">Try Again</Text>
+							</Pressable>
 						</View>
 					) : (
 						<Text className="mb-4 text-center text-base text-white">

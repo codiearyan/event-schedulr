@@ -5,7 +5,8 @@ import type { Id } from "@event-schedulr/backend/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 import { ArrowRight, PlusIcon, QrCode, Users } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 async function loadImageAsDataUrl(url: string): Promise<string | null> {
@@ -252,6 +253,24 @@ function EmptyState({ type }: { type: "upcoming" | "past" }) {
 export default function EventsPage() {
 	const events = useQuery(api.events.getAll);
 	const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
+
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const hasRedirected = useRef(false);
+	const fromLanding = searchParams.get("from") === "landing";
+
+	const currentEvent = events?.find((e) => e.isCurrentEvent);
+
+	useEffect(() => {
+		if (fromLanding && !hasRedirected.current && events !== undefined) {
+			hasRedirected.current = true;
+			if (currentEvent) {
+				router.replace(`/events/${currentEvent._id}`);
+			} else {
+				router.replace("/events");
+			}
+		}
+	}, [fromLanding, events, currentEvent, router]);
 
 	if (events === undefined) {
 		return (
