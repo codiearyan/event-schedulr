@@ -9,8 +9,8 @@
  */
 
 import type * as accessCodes from "../accessCodes.js";
-import type * as analytics from "../analytics.js";
 import type * as activityReactions from "../activityReactions.js";
+import type * as analytics from "../analytics.js";
 import type * as announcements from "../announcements.js";
 import type * as auth from "../auth.js";
 import type * as chatMessages from "../chatMessages.js";
@@ -34,8 +34,8 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   accessCodes: typeof accessCodes;
-  analytics: typeof analytics;
   activityReactions: typeof activityReactions;
+  analytics: typeof analytics;
   announcements: typeof announcements;
   auth: typeof auth;
   chatMessages: typeof chatMessages;
