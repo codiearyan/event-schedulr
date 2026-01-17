@@ -10,8 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TodosRouteImport } from './routes/todos'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as EventsRouteImport } from './routes/events'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreateEventRouteImport } from './routes/create-event'
 import { Route as AnnouncementRouteImport } from './routes/announcement'
 import { Route as IndexRouteImport } from './routes/index'
@@ -22,14 +22,14 @@ const TodosRoute = TodosRouteImport.update({
   path: '/todos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
   path: '/events',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CreateEventRoute = CreateEventRouteImport.update({
@@ -57,8 +57,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/announcement': typeof AnnouncementRoute
   '/create-event': typeof CreateEventRoute
-  '/dashboard': typeof DashboardRoute
   '/events': typeof EventsRoute
+  '/signup': typeof SignupRoute
   '/todos': typeof TodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
@@ -66,8 +66,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/announcement': typeof AnnouncementRoute
   '/create-event': typeof CreateEventRoute
-  '/dashboard': typeof DashboardRoute
   '/events': typeof EventsRoute
+  '/signup': typeof SignupRoute
   '/todos': typeof TodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
@@ -76,8 +76,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/announcement': typeof AnnouncementRoute
   '/create-event': typeof CreateEventRoute
-  '/dashboard': typeof DashboardRoute
   '/events': typeof EventsRoute
+  '/signup': typeof SignupRoute
   '/todos': typeof TodosRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
@@ -87,8 +87,8 @@ export interface FileRouteTypes {
     | '/'
     | '/announcement'
     | '/create-event'
-    | '/dashboard'
     | '/events'
+    | '/signup'
     | '/todos'
     | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
@@ -96,8 +96,8 @@ export interface FileRouteTypes {
     | '/'
     | '/announcement'
     | '/create-event'
-    | '/dashboard'
     | '/events'
+    | '/signup'
     | '/todos'
     | '/api/auth/$'
   id:
@@ -105,8 +105,8 @@ export interface FileRouteTypes {
     | '/'
     | '/announcement'
     | '/create-event'
-    | '/dashboard'
     | '/events'
+    | '/signup'
     | '/todos'
     | '/api/auth/$'
   fileRoutesById: FileRoutesById
@@ -115,8 +115,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnnouncementRoute: typeof AnnouncementRoute
   CreateEventRoute: typeof CreateEventRoute
-  DashboardRoute: typeof DashboardRoute
   EventsRoute: typeof EventsRoute
+  SignupRoute: typeof SignupRoute
   TodosRoute: typeof TodosRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
@@ -130,18 +130,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TodosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/events': {
       id: '/events'
       path: '/events'
       fullPath: '/events'
       preLoaderRoute: typeof EventsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/create-event': {
@@ -179,8 +179,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnnouncementRoute: AnnouncementRoute,
   CreateEventRoute: CreateEventRoute,
-  DashboardRoute: DashboardRoute,
   EventsRoute: EventsRoute,
+  SignupRoute: SignupRoute,
   TodosRoute: TodosRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
