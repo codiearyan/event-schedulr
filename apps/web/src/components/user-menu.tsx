@@ -24,7 +24,7 @@ export default function UserMenu() {
 	return (
 		<DropdownMenu>
 			{/* Trigger */}
-			<DropdownMenuTrigger>
+			<DropdownMenuTrigger asChild>
 				<Button
 					variant="ghost"
 					className="flex cursor-pointer items-center gap-2 rounded-full duration-200"
