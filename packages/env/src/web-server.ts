@@ -3,8 +3,8 @@ import { z } from "zod";
 
 export const env = createEnv({
 	server: {
-		VITE_CONVEX_URL: z.url(),
-		VITE_CONVEX_SITE_URL: z.url(),
+		CONVEX_URL: z.url(),
+		CONVEX_SITE_URL: z.url(),
 	},
 	runtimeEnv: process.env,
 	emptyStringAsUndefined: true,
