@@ -13,12 +13,12 @@ export const Route = createFileRoute("/")({
 
 function HomeComponent() {
   const name = [
-    "ARNAB JK (@xensen008)",
-    "ARYAN BHATI (@codiearyan)",
-    "ALECX SINGH (@Aleck2004)",
+    "Arnab JK (@xensen008)",
+    "Aryan Bhati (@codiearyan)",
+    "Alecx Singh (@Aleck2004)",
 
-    "ARJUN BHANDARI (@ArjunBhandari)",
-    "ANURAGBARUAH (@AnuragBaruah47)",
+    "Arjun Bhandari (@ArjunBhandari)",
+    "Anurag Baruah (@AnuragBaruah47)",
   ];
 
   type TeamItem = {
@@ -453,7 +453,7 @@ function HomeComponent() {
                 ref={ref1}
                 className="font-extrabold -mt-20 tracking-wide translate-y-0 whitespace-nowrap absolute text-white text-7xl"
               >
-                TEAM BEROZGAAR_ENGINEERS
+                Berozgaar_Engineers
               </div>
 
               {name.map((each, index) => {
