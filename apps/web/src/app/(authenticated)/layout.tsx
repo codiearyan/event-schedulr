@@ -1,14 +1,14 @@
 import AuthenticatedHeader from "@/components/authenticated-header";
 
 export default function AuthenticatedLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return (
-		<div className="grid h-svh grid-rows-[auto_1fr]">
-			<AuthenticatedHeader />
-			{children}
-		</div>
-	);
+  return (
+    <div className="h-screen eve">
+      <AuthenticatedHeader />
+      {children}
+    </div>
+  );
 }
