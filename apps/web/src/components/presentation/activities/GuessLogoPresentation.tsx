@@ -4,7 +4,7 @@ import { api } from "@event-schedulr/backend/convex/_generated/api";
 import type { Id } from "@event-schedulr/backend/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ImageIcon, Trophy, Users } from "lucide-react";
+import { Heart, ImageIcon, Trophy, Users } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface GuessLogoPresentationProps {
@@ -28,6 +28,9 @@ export function GuessLogoPresentation({
 	results,
 }: GuessLogoPresentationProps) {
 	const currentLogo = useQuery(api.guessLogo.getCurrentLogo, { activityId });
+	const reactionCount = useQuery(api.activityReactions.getReactionCount, {
+		activityId,
+	});
 
 	const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
 	const lastSyncRef = useRef<{ serverTime: number; localTime: number } | null>(
@@ -305,24 +308,45 @@ export function GuessLogoPresentation({
 					</div>
 				)}
 
-				<div
-					className="mt-6 rounded-lg p-4 text-center"
-					style={{
-						backgroundColor: "var(--presentation-border)",
-					}}
-				>
-					<div className="flex items-center justify-center gap-2">
-						<Users size={18} style={{ color: "var(--presentation-muted)" }} />
-						<p
-							className="font-bold text-2xl"
-							style={{ color: "var(--presentation-text)" }}
-						>
-							{results.totalParticipants}
+				<div className="mt-6 flex gap-3">
+					<div
+						className="flex-1 rounded-lg p-3 text-center"
+						style={{
+							backgroundColor: "var(--presentation-border)",
+						}}
+					>
+						<div className="flex items-center justify-center gap-2">
+							<Heart size={16} className="fill-red-500 text-red-500" />
+							<p
+								className="font-bold text-xl"
+								style={{ color: "var(--presentation-text)" }}
+							>
+								{reactionCount?.count ?? 0}
+							</p>
+						</div>
+						<p className="text-xs" style={{ color: "var(--presentation-muted)" }}>
+							Likes
 						</p>
 					</div>
-					<p className="text-xs" style={{ color: "var(--presentation-muted)" }}>
-						Players
-					</p>
+					<div
+						className="flex-1 rounded-lg p-3 text-center"
+						style={{
+							backgroundColor: "var(--presentation-border)",
+						}}
+					>
+						<div className="flex items-center justify-center gap-2">
+							<Users size={16} style={{ color: "var(--presentation-muted)" }} />
+							<p
+								className="font-bold text-xl"
+								style={{ color: "var(--presentation-text)" }}
+							>
+								{results.totalParticipants}
+							</p>
+						</div>
+						<p className="text-xs" style={{ color: "var(--presentation-muted)" }}>
+							Players
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>

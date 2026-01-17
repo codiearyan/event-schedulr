@@ -31,7 +31,10 @@ export default function PresentModePage() {
 	}
 
 	return (
-		<PresentationLayout activityId={activityId}>
+		<PresentationLayout
+			activityId={activityId}
+			showFooter={activity.type !== "guess_logo"}
+		>
 			{activity.type === "poll" && results?.type === "poll" && (
 				<PollPresentation
 					config={

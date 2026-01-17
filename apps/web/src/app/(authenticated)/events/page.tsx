@@ -4,6 +4,7 @@ import { api } from "@event-schedulr/backend/convex/_generated/api";
 import type { Id } from "@event-schedulr/backend/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 import { ArrowRight, PlusIcon, QrCode, Users } from "lucide-react";
+import { getPresetById } from "@/lib/event-graphics";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -30,12 +31,20 @@ type EventWithStatus = {
 	name: string;
 	description: string;
 	eventImage?: { type: "uploaded" | "preset"; value: string };
+	resolvedImageUrl?: string | null;
 	startsAt: number;
 	endsAt: number;
 	messageToParticipants?: string;
 	isCurrentEvent: boolean;
 	status: "upcoming" | "live" | "ended";
 };
+
+function getPresetBackground(presetId: string): string {
+	const preset = getPresetById(presetId);
+	return (
+		preset?.background || "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+	);
+}
 
 function formatTime(timestampMs: number): string {
 	const date = new Date(timestampMs);
@@ -206,11 +215,24 @@ function EventCard({
 				</div>
 			</div>
 
-			<div className="ml-4 h-28 w-28 flex-shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-amber-200 to-amber-400">
-				<div className="flex h-full w-full items-center justify-center">
-					<div className="h-16 w-16 rounded-full border-4 border-white/30" />
+			{event.eventImage?.type === "uploaded" && event.resolvedImageUrl ? (
+				<img
+					src={event.resolvedImageUrl}
+					alt={event.name}
+					className="ml-4 h-28 w-28 flex-shrink-0 rounded-lg object-cover"
+				/>
+			) : event.eventImage?.type === "preset" ? (
+				<div
+					className="ml-4 h-28 w-28 flex-shrink-0 rounded-lg"
+					style={{ background: getPresetBackground(event.eventImage.value) }}
+				/>
+			) : (
+				<div className="ml-4 h-28 w-28 flex-shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-amber-200 to-amber-400">
+					<div className="flex h-full w-full items-center justify-center">
+						<div className="h-16 w-16 rounded-full border-4 border-white/30" />
+					</div>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 }
