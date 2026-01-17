@@ -146,6 +146,20 @@ export const setCurrentEvent = mutation({
 	},
 });
 
+export const remove = mutation({
+	args: {
+		id: v.id("events"),
+	},
+	handler: async (ctx, args) => {
+		const event = await ctx.db.get(args.id);
+		if (!event) {
+			throw new Error("Event not found");
+		}
+		await ctx.db.delete(args.id);
+		return { success: true };
+	},
+});
+
 export const seed = mutation({
 	handler: async (ctx) => {
 		const existing = await ctx.db
