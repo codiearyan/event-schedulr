@@ -71,10 +71,10 @@ import { Link } from "@tanstack/react-router";
 import { api } from "@event-schedulr/backend/convex/_generated/api";
 import { useQuery } from "convex/react";
 
-import UserMenu from "@/components/user-menu";
+// import UserMenu from "@/components/user-menu";
 
 export default function Header() {
-  const user = useQuery(api.auth.getCurrentUser);
+  // const user = useQuery(api.auth.getCurrentUser);
 
   const centerNav = [
     { label: "Features", href: "/features" },
@@ -120,7 +120,7 @@ export default function Header() {
         </nav>
 
         {/* Right side auth */}
-        <div className="flex items-center gap-4">
+        {/* <div className="flex items-center gap-4">
           {user ? (
             <UserMenu />
           ) : (
@@ -138,7 +138,7 @@ export default function Header() {
               <span className="absolute -inset-px rounded-xl bg-indigo-500/40 blur-lg opacity-0 hover:opacity-100 transition-opacity" />
             </Link>
           )}
-        </div>
+        </div> */}
       </div>
     </header>
   );
