@@ -8,7 +8,6 @@ import UserMenu from "./user-menu";
 
 const navItems = [
 	{ label: "Events", href: "/events", icon: Calendar },
-	{ label: "Announcements", href: "/announcements", icon: Megaphone },
 	{ label: "Analytics", href: "/analytics", icon: BarChart3 },
 ];
 

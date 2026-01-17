@@ -12,11 +12,11 @@ gsap.registerPlugin(TextPlugin, SplitText);
 
 export default function HomePage() {
 	const name = [
-		"Arnab JK (@xensen008)",
-		"Aryan Bhati (@codiearyan)",
-		"Alecx Singh (@Aleck2004)",
-		"Arjun Bhandari (@ArjunBhandari)",
-		"Anurag Baruah (@AnuragBaruah47)",
+		"ARNAB",
+		"ARYAN",
+		"ALECX",
+		"ARJUN",
+		"ANURAG",
 	];
 
 	type TeamItem = {
@@ -261,7 +261,7 @@ export default function HomePage() {
 					</div>
 				</div>
 
-				<div className="h-full w-full bg-bg-main">
+				<div className="h-full w-full">
 					<div className="flex justify-between">
 						<div className="ml-40 flex flex-col gap-5">
 							<h1 className="font-bold text-primary">THE TOOLKIT</h1>
@@ -272,7 +272,7 @@ export default function HomePage() {
 					</div>
 
 					<div className="mt-10 flex w-full justify-center gap-15">
-						<div className="flex h-auto w-[55%] flex-col gap-10 rounded-xl bg-[#161616] p-5">
+						<div className="flex h-115 w-[55%] flex-col gap-5 rounded-xl bg-[#161616] p-5">
 							<div className="mx-12 mt-5 flex flex-col gap-2">
 								<div className="w-8">
 									<svg
@@ -396,7 +396,7 @@ export default function HomePage() {
 					</div>
 				</div>
 
-				<div className="flex h-full w-full flex-col items-center gap-10 bg-bg-main">
+				<div className="flex h-full w-full flex-col items-center gap-10">
 					<h1 className="font-semibold text-6xl text-white">
 						See It in Action
 					</h1>
@@ -424,7 +424,7 @@ export default function HomePage() {
 					</div>
 				</div>
 
-				<div className="flex w-full flex-col gap-10 bg-bg-main">
+				<div className="flex w-full flex-col gap-10">
 					<div className="flex w-full justify-center">
 						<h1 className="font-semibold text-6xl text-white">
 							Brains Behind the Scenes
@@ -457,9 +457,9 @@ export default function HomePage() {
 							<div className="font relative flex h-50 w-7xl items-center justify-center overflow-clip">
 								<div
 									ref={ref1}
-									className="absolute -mt-20 translate-y-0 whitespace-nowrap font-extrabold text-7xl text-white tracking-wide"
+									className="absolute -mt-20 anim2 translate-y-0 whitespace-nowrap font-extrabold text-7xl text-[#0000ff] tracking-wide"
 								>
-									Berozgaar_Engineers
+									BEROJGAAR ENGINEERS
 								</div>
 
 								{name.map((each, index) => {
@@ -468,7 +468,7 @@ export default function HomePage() {
 											ref={(el) => {
 												if (el) allText.current[index] = el;
 											}}
-											className="absolute -mt-20 translate-y-96 border-2 font-extrabold text-7xl text-primary tracking-tighter"
+											className="absolute  translate-y-96 anim border-2 text-7xl text-primary tracking-tighter"
 											key={index}
 										>
 											{each}

@@ -15,6 +15,7 @@ import {
 	User,
 	Utensils,
 } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
@@ -68,6 +69,8 @@ const statusColors = {
 
 export function ScheduleTab({ eventId }: ScheduleTabProps) {
 	const sessions = useQuery(api.schedule.getSessionsByEvent, { eventId });
+	const currentSession = useQuery(api.schedule.getCurrentSession, { eventId });
+	const nextSession = useQuery(api.schedule.getNextUpcomingSession, { eventId });
 	const deleteSession = useMutation(api.schedule.deleteSession);
 
 	const handleDelete = async (sessionId: Id<"sessions">) => {
@@ -90,6 +93,27 @@ export function ScheduleTab({ eventId }: ScheduleTabProps) {
 		});
 	};
 
+	const formatDate = (timestamp: number) => {
+		return new Date(timestamp).toLocaleDateString("en-US", {
+			weekday: "long",
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		});
+	};
+
+	const groupSessionsByDate = (sessions: any[]) => {
+		const grouped: Record<string, any[]> = {};
+		sessions.forEach((session) => {
+			const dateKey = new Date(session.date).toDateString();
+			if (!grouped[dateKey]) {
+				grouped[dateKey] = [];
+			}
+			grouped[dateKey].push(session);
+		});
+		return grouped;
+	};
+
 	if (sessions === undefined) {
 		return (
 			<div className="space-y-4">
@@ -104,86 +128,168 @@ export function ScheduleTab({ eventId }: ScheduleTabProps) {
 		);
 	}
 
+	const groupedSessions = groupSessionsByDate(sessions || []);
+	const dates = Object.keys(groupedSessions).sort(
+		(a, b) => new Date(a).getTime() - new Date(b).getTime(),
+	);
+
 	return (
-		<div className="space-y-6">
+		<div className="space-y-6 h-full">
 			<div className="flex items-center justify-between">
 				<h2 className="font-semibold text-white text-xl">Schedule</h2>
-				<Button
-					size="sm"
-					className="bg-white text-black hover:bg-white/90"
-					disabled
-				>
-					<Plus size={14} className="mr-2" />
-					Add Session
-				</Button>
+				<Link href={`/schedule-create?eventId=${eventId}`}>
+					<Button
+						size="lg"
+						className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 font-medium text-sm transition-colors hover:bg-white/10"
+					>
+						<Plus size={14} />
+						Add Session
+					</Button>
+				</Link>
 			</div>
 
-			{sessions.length > 0 ? (
-				<div className="space-y-3">
-					{sessions.map((session) => {
-						const config = typeConfig[session.type] || typeConfig.other;
-						const Icon = config.icon;
+			{(currentSession || nextSession) && (
+				<div className="grid gap-4 sm:grid-cols-2">
+					{currentSession && (
+						<div className="rounded-xl border border-green-500/50 bg-green-600/20 p-4">
+							<div className="mb-3 flex items-center gap-2">
+								<div className="h-3 w-3 rounded-full bg-red-500 animate-pulse" />
+								<h3 className="font-semibold text-green-400 text-sm">HAPPENING NOW</h3>
+							</div>
+							<h4 className="mb-2 font-semibold text-white text-lg">
+								{currentSession.title}
+							</h4>
+							<div className="flex items-center gap-4 text-sm text-green-200">
+								<span className="flex items-center gap-1">
+									<Clock className="h-4 w-4" />
+									{formatTime(currentSession.startTime)} -{" "}
+									{formatTime(currentSession.endTime)}
+								</span>
+								{currentSession.location && (
+									<span className="flex items-center gap-1">
+										<MapPin className="h-4 w-4" />
+										{currentSession.location}
+									</span>
+								)}
+							</div>
+						</div>
+					)}
+
+					{nextSession && (
+						<div className="rounded-xl border border-blue-500/50 bg-blue-600/20 p-4">
+							<div className="mb-3 flex items-center gap-2">
+								<div className="h-3 w-3 rounded-full bg-orange-500" />
+								<h3 className="font-semibold text-blue-400 text-sm">UP NEXT</h3>
+							</div>
+							<h4 className="mb-2 font-semibold text-white text-lg">
+								{nextSession.title}
+							</h4>
+							<div className="flex items-center gap-4 text-sm text-blue-200">
+								<span className="flex items-center gap-1">
+									<Clock className="h-4 w-4" />
+									{formatTime(nextSession.startTime)} -{" "}
+									{formatTime(nextSession.endTime)}
+								</span>
+								{nextSession.location && (
+									<span className="flex items-center gap-1">
+										<MapPin className="h-4 w-4" />
+										{nextSession.location}
+									</span>
+								)}
+							</div>
+						</div>
+					)}
+				</div>
+			)}
+
+			{dates.length > 0 ? (
+				<div className="space-y-6">
+					{dates.map((dateKey) => {
+						const dateSessions = groupedSessions[dateKey];
+						const displayDate = formatDate(new Date(dateKey).getTime());
 
 						return (
-							<div
-								key={session._id}
-								className="flex gap-4 rounded-xl border border-white/10 bg-white/[0.03] p-4"
-							>
-								<div className="flex flex-col items-center gap-1 text-center">
-									<span className="font-semibold text-lg text-white">
-										{formatTime(session.startTime)}
-									</span>
-									<span className="text-white/40 text-xs">to</span>
-									<span className="text-sm text-white/60">
-										{formatTime(session.endTime)}
-									</span>
-								</div>
-
-								<div className="h-auto w-px bg-white/10" />
-
-								<div className="flex-1">
-									<div className="flex items-center gap-2">
-										<h3 className="font-medium text-white">{session.title}</h3>
-										<Badge className={config.color}>{config.label}</Badge>
-										<Badge
-											className={
-												statusColors[session.status] || statusColors.upcoming
-											}
-										>
-											{session.status}
-										</Badge>
+							<div key={dateKey} className="space-y-4">
+								<div className="relative flex items-center justify-center my-6">
+									<div className="absolute inset-0 flex items-center">
+										<div className="w-full border-t border-white/10" />
 									</div>
-
-									{session.description && (
-										<p className="mt-1 text-sm text-white/60">
-											{session.description}
-										</p>
-									)}
-
-									<div className="mt-2 flex flex-wrap gap-4 text-sm text-white/50">
-										{session.speaker && (
-											<span className="flex items-center gap-1">
-												<User size={12} />
-												{session.speaker}
-											</span>
-										)}
-										{session.location && (
-											<span className="flex items-center gap-1">
-												<MapPin size={12} />
-												{session.location}
-											</span>
-										)}
+									<div className="relative bg-[#0a0a0f] px-4">
+										<span className="text-white/50 text-sm">{displayDate}</span>
 									</div>
 								</div>
 
-								<Button
-									size="sm"
-									variant="ghost"
-									className="text-red-400 hover:bg-red-500/10 hover:text-red-300"
-									onClick={() => handleDelete(session._id)}
-								>
-									<Trash2 size={14} />
-								</Button>
+								<div className="space-y-3">
+									{dateSessions.map((session) => {
+										const config = typeConfig[session.type as keyof typeof typeConfig] || typeConfig.other;
+										const Icon = config.icon;
+
+										return (
+											<div
+												key={session._id}
+												className="flex gap-4 rounded-xl border border-white/10 bg-white/3 p-4 transition-colors hover:bg-white/6"
+											>
+												<div className="flex flex-col items-center gap-1 text-center min-w-[100px]">
+													<span className="font-semibold text-lg text-white">
+														{formatTime(session.startTime)}
+													</span>
+													<span className="text-white/40 text-xs">to</span>
+													<span className="text-sm text-white/60">
+														{formatTime(session.endTime)}
+													</span>
+												</div>
+
+												<div className="h-auto w-px bg-white/10" />
+
+												<div className="flex-1">
+													<div className="flex items-center gap-2">
+														<h3 className="font-medium text-white">{session.title}</h3>
+														<Badge className={`${config.color} rounded-lg`}>
+															{config.label}
+														</Badge>
+														<Badge
+															className={`${
+																statusColors[session.status as keyof typeof statusColors] || statusColors.upcoming
+															} rounded-lg`}
+														>
+															{session.status}
+														</Badge>
+													</div>
+
+													{session.description && (
+														<p className="mt-1 text-sm text-white/60">
+															{session.description}
+														</p>
+													)}
+
+													<div className="mt-2 flex flex-wrap gap-4 text-sm text-white/50">
+														{session.speaker && (
+															<span className="flex items-center gap-1">
+																<User size={12} />
+																{session.speaker}
+															</span>
+														)}
+														{session.location && (
+															<span className="flex items-center gap-1">
+																<MapPin size={12} />
+																{session.location}
+															</span>
+														)}
+													</div>
+												</div>
+
+												<Button
+													size="sm"
+													variant="ghost"
+													className="text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-xl"
+													onClick={() => handleDelete(session._id)}
+												>
+													<Trash2 size={14} />
+												</Button>
+											</div>
+										);
+									})}
+								</div>
 							</div>
 						);
 					})}
