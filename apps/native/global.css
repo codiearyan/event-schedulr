@@ -3,3 +3,20 @@
 @import "heroui-native/styles";
 
 @source "./node_modules/heroui-native/lib";
+
+@theme {
+  /* Backgrounds */
+  --color-bg-main: #0c0d0d;
+  --color-bg-section: #151717;
+  --color-bg-card: #212d2f;
+
+  /* Primary Accent (Teal) */
+  --color-primary: #22b0b8;
+  --color-primary-bright: #06a7b0;
+  --color-primary-dark: #0c6a72;
+
+  /* Neutrals */
+  --color-text-primary: #d5d7d7;
+  --color-text-muted: #606266;
+  --color-border: #212d2f;
+}
