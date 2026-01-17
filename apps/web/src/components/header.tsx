@@ -44,11 +44,11 @@ export default function Header() {
   const rightNav = navLinks.filter((l) => l.position === "right");
 
   return (
-    <header className="flex items-center bg-[#0C0C0C] p-3 justify-between ">
+    <header className="flex items-center bg-[#1a1a1a] p-3 justify-between ">
       <div>
         {leftNav.map(({ label, href }) => (
           <Link key={label} to={href} className="p-3 text-white">
-            {label}
+           <img className="h-15 absolute top-0" src="https://cdn.discordapp.com/attachments/843057977023004692/1461325669769150736/WhatsApp_Image_2026-01-15_at_16.47.20-removebg-preview_1_-_Edited_1.png?ex=696a2515&is=6968d395&hm=7069116d20d5579ab03b1b6893cf39b95a3d8bb5e0ef470545755aabf7d79462&" alt="logo" />
           </Link>
         ))}
       </div>
