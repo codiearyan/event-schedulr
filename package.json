@@ -1,0 +1,31 @@
+{
+  "name": "event-schedulr",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "dev:native": "turbo -F native dev",
+    "dev:web": "turbo -F web dev",
+    "dev:server": "turbo -F @event-schedulr/backend dev",
+    "dev:setup": "turbo -F @event-schedulr/backend dev:setup",
+    "check": "biome check --write ."
+  },
+  "dependencies": {
+    "@event-schedulr/env": "workspace:*",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
+    "@event-schedulr/config": "workspace:*",
+    "turbo": "^2.6.3",
+    "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@10.23.0"
+}
