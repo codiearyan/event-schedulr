@@ -16,16 +16,17 @@ export default function GoogleSignIn() {
     await authClient.signIn.social(
       {
         provider: "google",
+        callbackURL: "/events",
       },
       {
         onSuccess: () => {
           toast.success("Signed in successfully");
-          navigate({ to: "/dashboard" });
+          navigate({ to: "/events" });
         },
         onError: (error) => {
           console.error(error);
           toast.error(error.error.message || error.error.statusText);
-          setLoading(false); // reset only on error
+          setLoading(false);
         },
       }
     );
