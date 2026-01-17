@@ -38,7 +38,7 @@ function SelectTrigger({
 			data-slot="select-trigger"
 			data-size={size}
 			className={cn(
-				"flex w-fit select-none items-center justify-between gap-1.5 whitespace-nowrap rounded-xl bg-bg-input py-2 pr-2 pl-2.5 text-xs outline-none transition-colors focus-visible:ring-1 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-1 aria-invalid:ring-destructive/20 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-xl  *:data-[slot=select-value]:line-clamp-1 **:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 dark:bg-bg-input dark:aria-invalid:ring-destructive/40 dark:hover:bg-input/50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+				"flex w-fit select-none items-center justify-between gap-1.5 whitespace-nowrap rounded-xl bg-bg-input py-2 pr-2 pl-2.5 text-xs outline-none transition-colors focus-visible:ring-1 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-1 aria-invalid:ring-destructive/20 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-xl *:data-[slot=select-value]:line-clamp-1 **:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 dark:bg-bg-input dark:aria-invalid:ring-destructive/40 dark:hover:bg-input/50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
 				className,
 			)}
 			{...props}

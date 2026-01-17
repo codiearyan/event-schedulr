@@ -102,6 +102,35 @@ export const getById = query({
 	},
 });
 
+export const getActivityWithJoinCode = query({
+	args: {
+		activityId: v.id("liveActivities"),
+	},
+	handler: async (ctx, args) => {
+		const activity = await ctx.db.get(args.activityId);
+		if (!activity) {
+			return null;
+		}
+
+		const accessCode = await ctx.db
+			.query("accessCodes")
+			.withIndex("by_event", (q) => q.eq("eventId", activity.eventId))
+			.filter((q) => q.eq(q.field("isActive"), true))
+			.first();
+
+		const participantCount = await ctx.db
+			.query("activityParticipants")
+			.withIndex("by_activity", (q) => q.eq("activityId", args.activityId))
+			.collect();
+
+		return {
+			...activity,
+			joinCode: accessCode?.code ?? null,
+			participantCount: participantCount.length,
+		};
+	},
+});
+
 export const getAggregatedResults = query({
 	args: {
 		activityId: v.id("liveActivities"),

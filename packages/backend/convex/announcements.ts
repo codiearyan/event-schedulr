@@ -1,6 +1,18 @@
 import { v } from "convex/values";
 
+import { internal } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
+
+const getNotificationTitle = (type: "info" | "warning" | "success") => {
+	switch (type) {
+		case "info":
+			return "📢 New Announcement";
+		case "warning":
+			return "⚠️ Important Notice";
+		case "success":
+			return "✅ Good News!";
+	}
+};
 
 export const getByEvent = query({
 	args: {
@@ -31,6 +43,18 @@ export const create = mutation({
 			message: args.message,
 			type: args.type,
 		});
+
+		await ctx.scheduler.runAfter(
+			0,
+			internal.notifications.sendPushNotificationsInternal,
+			{
+				eventId: args.eventId,
+				title: getNotificationTitle(args.type),
+				body: args.message,
+				data: { type: "ANNOUNCEMENT", announcementId: announcementId },
+			},
+		);
+
 		return await ctx.db.get(announcementId);
 	},
 });

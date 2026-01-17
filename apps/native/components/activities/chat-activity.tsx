@@ -12,8 +12,11 @@ import {
 	Text,
 	View,
 } from "react-native";
+import Animated, { FadeInLeft, FadeInRight } from "react-native-reanimated";
 
 import { Container } from "@/components/container";
+import { FloatingHeartsContainer } from "@/components/ui/FloatingHeartsContainer";
+import { ReactionButton } from "@/components/ui/ReactionButton";
 
 type ChatConfig = {
 	type: "anonymous_chat";
@@ -50,6 +53,7 @@ export function ChatActivity({ activity, participantId }: Props) {
 
 	const scrollViewRef = useRef<ScrollView>(null);
 	const lastMessageCountRef = useRef(0);
+	const seenMessagesRef = useRef<Set<string>>(new Set());
 
 	const sendMessage = useMutation(api.chatMessages.send);
 	const messages = useQuery(api.chatMessages.getRecentByActivity, {
@@ -66,6 +70,14 @@ export function ChatActivity({ activity, participantId }: Props) {
 
 	const accentColor = useThemeColor("accent");
 	const mutedColor = useThemeColor("muted");
+
+	useEffect(() => {
+		if (messages) {
+			for (const msg of messages) {
+				seenMessagesRef.current.add(msg._id);
+			}
+		}
+	}, []);
 
 	useEffect(() => {
 		if (messages && messages.length > lastMessageCountRef.current) {
@@ -122,8 +134,17 @@ export function ChatActivity({ activity, participantId }: Props) {
 		});
 	};
 
+	const isNewMessage = (msgId: string) => {
+		if (seenMessagesRef.current.has(msgId)) {
+			return false;
+		}
+		seenMessagesRef.current.add(msgId);
+		return true;
+	};
+
 	return (
 		<Container>
+			<FloatingHeartsContainer activityId={activity._id} />
 			<KeyboardAvoidingView
 				behavior={Platform.OS === "ios" ? "padding" : "height"}
 				className="flex-1"
@@ -170,9 +191,17 @@ export function ChatActivity({ activity, participantId }: Props) {
 							<View className="gap-3">
 								{messages.map((msg) => {
 									const isOwnMessage = msg.participantId === participantId;
+									const shouldAnimate = isNewMessage(msg._id);
+									const enteringAnimation = shouldAnimate
+										? isOwnMessage
+											? FadeInRight.duration(300)
+											: FadeInLeft.duration(300)
+										: undefined;
+
 									return (
-										<View
+										<Animated.View
 											key={msg._id}
+											entering={enteringAnimation}
 											className={`${isOwnMessage ? "items-end" : "items-start"}`}
 										>
 											<Surface
@@ -207,7 +236,7 @@ export function ChatActivity({ activity, participantId }: Props) {
 													{msg.message}
 												</Text>
 											</Surface>
-										</View>
+										</Animated.View>
 									);
 								})}
 							</View>
@@ -233,6 +262,11 @@ export function ChatActivity({ activity, participantId }: Props) {
 									/>
 								</TextField>
 							</View>
+							<ReactionButton
+								activityId={activity._id}
+								participantId={participantId}
+								size={44}
+							/>
 							<Button
 								onPress={handleSend}
 								isDisabled={

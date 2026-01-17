@@ -6,7 +6,7 @@
 			"dependsOn": ["^build"],
 			"inputs": ["$TURBO_DEFAULT$", ".env*"],
 			"outputs": ["dist/**"],
-      		"env": ["CONVEX_URL", "CONVEX_DEPLOY_KEY"]
+			"env": ["CONVEX_URL", "CONVEX_DEPLOY_KEY"]
 		},
 		"lint": {
 			"dependsOn": ["^lint"]

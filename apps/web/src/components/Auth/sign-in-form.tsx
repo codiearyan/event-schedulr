@@ -52,17 +52,15 @@ export default function SignInForm({
 	return (
 		<div className="flex min-h-screen items-center justify-center px-4 py-12 text-light-text-muted">
 			<div className="w-full max-w-lg">
-				
-
 				<div className="rounded-2xl border border-border/50 bg-bg-card p-8 shadow-md backdrop-blur-sm">
-				<div className="mb-8 text-center">
-					<h1 className="text-balance font-bold text-3xl text-foreground tracking-tight">
-						Welcome back
-					</h1>
-					<p className="mt-2 text-muted-foreground text-sm">
-						Sign in to your account to continue
-					</p>
-				</div>
+					<div className="mb-8 text-center">
+						<h1 className="text-balance font-bold text-3xl text-foreground tracking-tight">
+							Welcome back
+						</h1>
+						<p className="mt-2 text-muted-foreground text-sm">
+							Sign in to your account to continue
+						</p>
+					</div>
 					<form
 						onSubmit={(e) => {
 							e.preventDefault();
@@ -176,19 +174,17 @@ export default function SignInForm({
 						<GoogleSignIn label={"Sign in With Google"} />
 					</div>
 					<div className="mt-6 text-center">
-					<p className="text-muted-foreground text-sm">
-						Don't have an account?{" "}
-						<button
-							onClick={onSwitchToSignUp}
-							className="font-semibold text-primary transition-colors duration-200 hover:text-accent"
-						>
-							Sign up
-						</button>
-					</p>
+						<p className="text-muted-foreground text-sm">
+							Don't have an account?{" "}
+							<button
+								onClick={onSwitchToSignUp}
+								className="font-semibold text-primary transition-colors duration-200 hover:text-accent"
+							>
+								Sign up
+							</button>
+						</p>
+					</div>
 				</div>
-				</div>
-
-				
 			</div>
 		</div>
 	);

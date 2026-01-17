@@ -52,18 +52,16 @@ export default function SignUpForm({
 
 	return (
 		<div className="flex min-h-screen items-center justify-center px-4 py-12 text-light-text-muted">
-			
-
-				<div className="rounded-2xl border border-border/50 bg-bg-card bg-card p-8 shadow-md backdrop-blur-sm w-full  max-w-lg flex flex-col items-center justify-center ">
+			<div className="flex w-full max-w-lg flex-col items-center justify-center rounded-2xl border border-border/50 bg-bg-card bg-card p-8 shadow-md backdrop-blur-sm">
 				<div className="w-full max-w-md">
-				<div className="mb-4 text-center">
-					<h1 className="text-balance font-bold text-3xl tracking-tight">
-						Create your account
-					</h1>
-					<p className="mt-2 text-sm">
-						Join our community and start your journey today
-					</p>
-				</div>
+					<div className="mb-4 text-center">
+						<h1 className="text-balance font-bold text-3xl tracking-tight">
+							Create your account
+						</h1>
+						<p className="mt-2 text-sm">
+							Join our community and start your journey today
+						</p>
+					</div>
 					<form
 						onSubmit={(e) => {
 							e.preventDefault();
@@ -231,22 +229,20 @@ export default function SignUpForm({
 					</div>
 
 					<div className="mt-7">
-						<GoogleSignIn  label={"Signup with Google"}/>
+						<GoogleSignIn label={"Signup with Google"} />
 					</div>
 					<div className="mt-6 text-center">
-					<p className="text-muted-foreground text-sm">
-						Already have an account?{" "}
-						<button
-							onClick={onSwitchToSignIn}
-							className="font-semibold text-primary transition-colors duration-200 hover:text-accent"
-						>
-							Sign in
-						</button>
-					</p>
+						<p className="text-muted-foreground text-sm">
+							Already have an account?{" "}
+							<button
+								onClick={onSwitchToSignIn}
+								className="font-semibold text-primary transition-colors duration-200 hover:text-accent"
+							>
+								Sign in
+							</button>
+						</p>
+					</div>
 				</div>
-				</div>
-
-				
 			</div>
 		</div>
 	);

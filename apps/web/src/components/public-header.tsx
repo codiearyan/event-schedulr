@@ -10,7 +10,7 @@ export default function PublicHeader() {
 
 	return (
 		<header className="sticky top-0 z-50">
-			<div className="absolute inset-0 " />
+			<div className="absolute inset-0" />
 			{/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(99,102,241,0.15),transparent_40%)]" />
 			<div className="absolute inset-0 backdrop-blur-xl" /> */}
 

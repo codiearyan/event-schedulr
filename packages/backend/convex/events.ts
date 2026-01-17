@@ -66,7 +66,20 @@ export const getById = query({
 export const getAll = query({
 	handler: async (ctx) => {
 		const events = await ctx.db.query("events").collect();
-		return events.map(withStatus);
+		return Promise.all(
+			events.map(async (event) => {
+				let resolvedImageUrl: string | null = null;
+				if (event.eventImage?.type === "uploaded") {
+					resolvedImageUrl = await ctx.storage.getUrl(
+						event.eventImage.value as Id<"_storage">,
+					);
+				}
+				return {
+					...withStatus(event),
+					resolvedImageUrl,
+				};
+			}),
+		);
 	},
 });
 

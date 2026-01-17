@@ -203,10 +203,10 @@ export default function HomePage() {
 	};
 
 	return (
-		<main className='eve'>
+		<main className="eve">
 			<PublicHeader />
 
-			<div className="flex h-auto w-full flex-col gap-20 ">
+			<div className="flex h-auto w-full flex-col gap-20">
 				<div ref={herosec} className="">
 					<div className="flex flex-col gap-10">
 						<div className="mt-20 flex w-full justify-center text-white">

@@ -179,6 +179,15 @@ export default defineSchema({
 		.index("by_activity", ["activityId"])
 		.index("by_activity_participant", ["activityId", "participantId"]),
 
+	activityReactions: defineTable({
+		activityId: v.id("liveActivities"),
+		participantId: v.id("participants"),
+		createdAt: v.number(),
+	})
+		.index("by_activity", ["activityId"])
+		.index("by_activity_time", ["activityId", "createdAt"])
+		.index("by_activity_participant", ["activityId", "participantId"]),
+
 	sessions: defineTable({
 		eventId: v.id("events"),
 		title: v.string(),

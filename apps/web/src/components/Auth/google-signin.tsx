@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { GoogleIcon } from "@/lib/icons";
 
-
-
 export default function GoogleSignIn({ label }: { label: string }) {
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
@@ -39,10 +37,9 @@ export default function GoogleSignIn({ label }: { label: string }) {
 
 	return (
 		<Button
-			
 			onClick={handleGoogleSignIn}
 			disabled={loading}
-			className="flex h-11 w-full bg-[#6366f1] text-white rounded-2xl items-center justify-center gap-2  transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60"
+			className="flex h-11 w-full items-center justify-center gap-2 rounded-2xl bg-[#6366f1] text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60"
 		>
 			{loading ? (
 				<>
@@ -51,7 +48,7 @@ export default function GoogleSignIn({ label }: { label: string }) {
 				</>
 			) : (
 				<>
-					<GoogleIcon/>
+					<GoogleIcon />
 					<span>{label}</span>
 				</>
 			)}
