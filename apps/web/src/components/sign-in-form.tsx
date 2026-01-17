@@ -8,6 +8,7 @@ import { authClient } from "@/lib/auth-client";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import GoogleSignIn from "./google-signin";
 
 export default function SignInForm({
 	onSwitchToSignUp,
@@ -122,6 +123,7 @@ export default function SignInForm({
 			</form>
 
 			<div className="mt-4 text-center">
+				<GoogleSignIn />
 				<Button
 					variant="link"
 					onClick={onSwitchToSignUp}
