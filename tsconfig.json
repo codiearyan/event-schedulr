@@ -1,3 +1,3 @@
 {
-  "extends": "@event-schedulr/config/tsconfig.base.json"
+	"extends": "@event-schedulr/config/tsconfig.base.json"
 }

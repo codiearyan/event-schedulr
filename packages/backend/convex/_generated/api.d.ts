@@ -8,7 +8,9 @@
  * @module
  */
 
+import type * as announcements from "../announcements.js";
 import type * as auth from "../auth.js";
+import type * as events from "../events.js";
 import type * as healthCheck from "../healthCheck.js";
 import type * as http from "../http.js";
 import type * as privateData from "../privateData.js";
@@ -21,7 +23,9 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  announcements: typeof announcements;
   auth: typeof auth;
+  events: typeof events;
   healthCheck: typeof healthCheck;
   http: typeof http;
   privateData: typeof privateData;
