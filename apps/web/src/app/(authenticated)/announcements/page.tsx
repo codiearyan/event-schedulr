@@ -1,8 +1,7 @@
-import { convexQuery } from "@convex-dev/react-query";
+"use client";
+
 import { api } from "@event-schedulr/backend/convex/_generated/api";
 import type { Id } from "@event-schedulr/backend/convex/_generated/dataModel";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery } from "convex/react";
 import {
   AlertCircle,
@@ -34,22 +33,15 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 
-export const Route = createFileRoute("/_authenticated/announcements")({
-  component: AnnouncementRoute,
-});
-
 type EventStatus = "upcoming" | "live" | "ended";
 type AnnouncementType = "info" | "warning" | "success";
 
-function AnnouncementRoute() {
+export default function AnnouncementsPage() {
   const [message, setMessage] = useState("");
   const [announcementType, setAnnouncementType] =
     useState<AnnouncementType>("info");
 
-  const eventQuery = useSuspenseQuery(
-    convexQuery(api.events.getCurrentEvent, {})
-  );
-  const event = eventQuery.data;
+  const event = useQuery(api.events.getCurrentEvent);
 
   const announcements = useQuery(
     api.announcements.getByEvent,
@@ -62,7 +54,7 @@ function AnnouncementRoute() {
   const removeAnnouncement = useMutation(api.announcements.remove);
 
   useEffect(() => {
-    if (!event) {
+    if (event === null) {
       seedEvent();
     }
   }, [event, seedEvent]);

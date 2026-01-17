@@ -1,5 +1,7 @@
+"use client";
+
 import { api } from "@event-schedulr/backend/convex/_generated/api";
-import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import {
   Calendar,
@@ -25,18 +27,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export const Route = createFileRoute("/_authenticated/create-event")({
-  component: CreateEventRoute,
-  validateSearch: (search: Record<string, unknown>) => {
-    return {
-      eventId: (search.eventId as string) || undefined,
-    };
-  },
-});
+export default function CreateEventPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const eventId = searchParams.get("eventId");
 
-function CreateEventRoute() {
-  const navigate = useNavigate();
-  const { eventId } = useSearch({ from: "/_authenticated/create-event" });
   const event = useQuery(
     api.events.getById,
     eventId ? { id: eventId as any } : "skip"
@@ -147,7 +142,7 @@ function CreateEventRoute() {
         }
       }
 
-      navigate({ to: "/events" });
+      router.push("/events");
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to save event"

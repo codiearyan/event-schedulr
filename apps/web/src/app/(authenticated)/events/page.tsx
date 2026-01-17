@@ -1,6 +1,9 @@
+"use client";
+
 import { api } from "@event-schedulr/backend/convex/_generated/api";
 import type { Id } from "@event-schedulr/backend/convex/_generated/dataModel";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { Edit, Eye, Plus, Sparkles, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -17,12 +20,8 @@ import {
 
 import { EventDetailsModal } from "@/components/event-details-modal";
 
-export const Route = createFileRoute("/_authenticated/events")({
-  component: EventsRoute,
-});
-
-function EventsRoute() {
-  const navigate = useNavigate();
+export default function EventsPage() {
+  const router = useRouter();
   const events = useQuery(api.events.getAll);
   const deleteEvent = useMutation(api.events.remove);
   const [selectedEventId, setSelectedEventId] = useState<Id<"events"> | null>(
@@ -81,7 +80,7 @@ function EventsRoute() {
               Manage and view all your events
             </p>
           </div>
-          <Link to="/create-event" search={{ eventId: undefined }}>
+          <Link href="/create-event">
             <Button>
               <Plus className="mr-2 h-4 w-4" />
               Create Event
@@ -97,7 +96,7 @@ function EventsRoute() {
               <p className="mb-6 text-muted-foreground">
                 Get started by creating your first event
               </p>
-              <Link to="/create-event" search={{ eventId: undefined }}>
+              <Link href="/create-event">
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
                   Create Your First Event
@@ -136,10 +135,7 @@ function EventsRoute() {
                   <Button
                     variant="outline"
                     onClick={() =>
-                      navigate({
-                        to: "/create-event",
-                        search: { eventId: event._id },
-                      })
+                      router.push(`/create-event?eventId=${event._id}`)
                     }
                   >
                     <Edit className="h-4 w-4" />

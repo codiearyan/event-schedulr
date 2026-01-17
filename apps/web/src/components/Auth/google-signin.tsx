@@ -1,11 +1,13 @@
+"use client";
+
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
 export default function GoogleSignIn() {
-  const navigate = useNavigate({ from: "/" });
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const handleGoogleSignIn = async () => {
@@ -21,7 +23,7 @@ export default function GoogleSignIn() {
       {
         onSuccess: () => {
           toast.success("Signed in successfully");
-          navigate({ to: "/events" });
+          router.push("/events");
         },
         onError: (error) => {
           console.error(error);

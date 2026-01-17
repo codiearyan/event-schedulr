@@ -1,5 +1,7 @@
+"use client";
+
 import { useForm } from "@tanstack/react-form";
-import { useNavigate } from "@tanstack/react-router";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -15,9 +17,7 @@ export default function SignInForm({
 }: {
   onSwitchToSignUp: () => void;
 }) {
-  const navigate = useNavigate({
-    from: "/",
-  });
+  const router = useRouter();
 
   const form = useForm({
     defaultValues: {
@@ -32,9 +32,7 @@ export default function SignInForm({
         },
         {
           onSuccess: () => {
-            navigate({
-              to: "/events",
-            });
+            router.push("/events");
             toast.success("Sign in successful");
           },
           onError: (error) => {
