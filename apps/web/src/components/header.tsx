@@ -1,82 +1,144 @@
 // import { Link } from "@tanstack/react-router";
 
+// export default function Header() {
+//   const centerNav = [
+//     { label: "Features", href: "/features" },
+//     { label: "Solutions", href: "/solutions" },
+//     { label: "Case Studies", href: "/case-studies" },
+//     { label: "Pricing", href: "/pricing" },
+//   ];
+
+//   return (
+//     <header className="sticky top-0 z-50">
+//       {/* Background layers */}
+//       <div className="absolute inset-0 bg-linear-to-b from-[#0b0f1a] via-[#0a0d14] to-[#06080f]" />
+//       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(99,102,241,0.15),transparent_40%)]" />
+//       <div className="absolute inset-0 backdrop-blur-xl" />
+
+//       <div className="relative mx-auto max-w-7xl px-6 py-4 flex items-center justify-between border-b border-white/10">
+//         {/* Logo */}
+//         <Link to="/" className="flex items-center gap-3 group">
+//           <div className="relative">
+//             <img
+//               src="https://cdn.discordapp.com/attachments/843057977023004692/1461325669769150736/WhatsApp_Image_2026-01-15_at_16.47.20-removebg-preview_1_-_Edited_1.png?ex=696a2515&is=6968d395&hm=7069116d20d5579ab03b1b6893cf39b95a3d8bb5e0ef470545755aabf7d79462&"
+//               alt="EventSchedulr"
+//               className="h-10 w-auto relative z-10"
+//             />
+//             {/* glow */}
+//             <span className="absolute -inset-2 rounded-xl bg-primary/30 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+//           </div>
+//           <span className="text-white font-semibold tracking-wide">
+//             EventSchedulr
+//           </span>
+//         </Link>
+
+//         {/* Center nav */}
+//         <nav className="hidden md:flex items-center gap-10">
+//           {centerNav.map(({ label, href }) => (
+//             <Link
+//               key={label}
+//               to={href}
+//               className="relative text-sm font-medium text-white/70 hover:text-white transition-colors"
+//             >
+//               {label}
+//               {/* underline glow */}
+//               <span className="absolute left-1/2 -bottom-2 h-0.5 w-0 bg-linear-to-r from-primary to-indigo-400 transition-all duration-300 group-hover:w-full group-hover:left-0" />
+//             </Link>
+//           ))}
+//         </nav>
+
+//         {/* CTA */}
+//         <Link
+//           to="/signup"
+//           className="relative inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-semibold text-white
+//           bg-linear-to-br from-primary to-indigo-600
+//           shadow-lg shadow-primary/20
+//           hover:shadow-indigo-500/10
+//           hover:-translate-y-0.5
+//           active:translate-y-0
+//           transition-all"
+//         >
+//           SignUp
+//           {/* CTA glow */}
+//           <span className="absolute -inset-px rounded-xl bg-indigo-500/40 blur-lg opacity-0 hover:opacity-100 transition-opacity" />
+//         </Link>
+//       </div>
+//     </header>
+//   );
+// }
+
 import { Link } from "@tanstack/react-router";
+import { api } from "@event-schedulr/backend/convex/_generated/api";
+import { useQuery } from "convex/react";
+
+import UserMenu from "@/components/user-menu";
 
 export default function Header() {
-  const navLinks = [
-    {
-      label: "EventSchedulr",
-      href: "/",
-      position: "left",
-    },
-    {
-      label: "Features",
-      href: "/features",
-      position: "center",
-    },
-    {
-      label: "Solutions",
-      href: "/solutions",
+  const user = useQuery(api.auth.getCurrentUser);
 
-      position: "center",
-    },
-    {
-      label: "Case Studies",
-      href: "/case-studies",
-      position: "center",
-    },
-    {
-      label: "Pricing",
-      href: "/pricing",
-      position: "center",
-    },
-
-    {
-      label: "Login",
-      href: "/login",
-      position: "right",
-      renderAs: "button",
-    },
+  const centerNav = [
+    { label: "Features", href: "/features" },
+    { label: "Solutions", href: "/solutions" },
+    { label: "Case Studies", href: "/case-studies" },
+    { label: "Pricing", href: "/pricing" },
   ];
 
-  const leftNav = navLinks.filter((l) => l.position === "left");
-  const centerNav = navLinks.filter((l) => l.position === "center");
-  const rightNav = navLinks.filter((l) => l.position === "right");
-
   return (
-    <header className="flex items-center bg-[#1a1a1a] p-3 justify-between ">
-      <div>
-        {leftNav.map(({ label, href }) => (
-          <Link key={label} to={href} className="p-3 text-white">
-           <img className="h-15 absolute top-0" src="https://cdn.discordapp.com/attachments/843057977023004692/1461325669769150736/WhatsApp_Image_2026-01-15_at_16.47.20-removebg-preview_1_-_Edited_1.png?ex=696a2515&is=6968d395&hm=7069116d20d5579ab03b1b6893cf39b95a3d8bb5e0ef470545755aabf7d79462&" alt="logo" />
-          </Link>
-        ))}
-      </div>
-      <nav className="flex font-bold gap-5">
-        {centerNav.map(({ label, href }) => (
-          <Link
-            className=" hover:text-primary-dark text-white active:scale-95 p-2"
-            key={label}
-            to={href}
-          >
-            {label}
-          </Link>
-        ))}
-      </nav>
-      <div>
-        {rightNav.map(
-          ({ label, href, renderAs }) =>
-            renderAs === "button" && (
-              <Link to={href}>
-                <button
-                  className="bg-primary transition-all ease-in-out hover:bg-primary-dark hover:text-white  cursor-pointer font-semibold active:scale-95 px-6 rounded-md py-2"
-                  key={label}
-                >
-                  {label}
-                </button>
-              </Link>
-            )
-        )}
+    <header className="sticky top-0 z-50">
+      {/* Background layers */}
+      <div className="absolute inset-0 bg-linear-to-b from-[#0b0f1a] via-[#0a0d14] to-[#06080f]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(99,102,241,0.15),transparent_40%)]" />
+      <div className="absolute inset-0 backdrop-blur-xl" />
+
+      <div className="relative mx-auto max-w-7xl px-6 py-4 flex items-center justify-between border-b border-white/10">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="relative">
+            <img
+              src="https://cdn.discordapp.com/attachments/843057977023004692/1461325669769150736/WhatsApp_Image_2026-01-15_at_16.47.20-removebg-preview_1_-_Edited_1.png?ex=696a2515&is=6968d395&hm=7069116d20d5579ab03b1b6893cf39b95a3d8bb5e0ef470545755aabf7d79462&"
+              alt="EventSchedulr"
+              className="h-10 w-auto relative z-10"
+            />
+            <span className="absolute -inset-2 rounded-xl bg-primary/30 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+          </div>
+          <span className="text-white font-semibold tracking-wide">
+            EventSchedulr
+          </span>
+        </Link>
+
+        {/* Center navigation */}
+        <nav className="hidden md:flex items-center gap-10">
+          {centerNav.map(({ label, href }) => (
+            <Link
+              key={label}
+              to={href}
+              className="relative text-sm font-medium text-white/70 hover:text-white transition-colors"
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Right side auth */}
+        <div className="flex items-center gap-4">
+          {user ? (
+            <UserMenu />
+          ) : (
+            <Link
+              to="/signup"
+              className="relative inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-semibold text-white
+              bg-linear-to-br from-primary to-indigo-600
+              shadow-lg shadow-primary/20
+              hover:shadow-indigo-500/10
+              hover:-translate-y-0.5
+              active:translate-y-0
+              transition-all"
+            >
+              Sign Up
+              <span className="absolute -inset-px rounded-xl bg-indigo-500/40 blur-lg opacity-0 hover:opacity-100 transition-opacity" />
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );
