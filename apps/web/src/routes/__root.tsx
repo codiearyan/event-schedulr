@@ -1,6 +1,7 @@
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
 import type { ConvexQueryClient } from "@convex-dev/react-query";
 import type { QueryClient } from "@tanstack/react-query";
+import { ConvexProvider } from "convex/react";
 import {
   createRootRouteWithContext,
   HeadContent,
@@ -14,7 +15,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { Toaster } from "@/components/ui/sonner";
 import { authClient } from "@/lib/auth-client";
 import { getToken } from "@/lib/auth-server";
-import { getConvexClient } from "../router";
 
 import Header from "../components/header";
 import appCss from "../index.css?url";
@@ -65,11 +65,9 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 
 function RootDocument() {
   const context = useRouteContext({ from: Route.id });
-  const convexClient = getConvexClient();
-
   return (
     <ConvexBetterAuthProvider
-      client={convexClient}
+      client={context.convexQueryClient.convexClient}
       authClient={authClient}
       initialToken={context.token}
     >
