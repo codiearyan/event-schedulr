@@ -1,54 +1,7 @@
-// import { api } from "@event-schedulr/backend/convex/_generated/api";
-// import { useQuery } from "convex/react";
-
-// import {
-// 	DropdownMenu,
-// 	DropdownMenuContent,
-// 	DropdownMenuGroup,
-// 	DropdownMenuItem,
-// 	DropdownMenuLabel,
-// 	DropdownMenuSeparator,
-// 	DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
-// import { authClient } from "@/lib/auth-client";
-
-// import { Button } from "./ui/button";
-
-// export default function UserMenu() {
-// 	const user = useQuery(api.auth.getCurrentUser);
-
-// 	return (
-// 		<DropdownMenu>
-// 			<DropdownMenuTrigger render={<Button variant="outline" />}>
-// 				{user?.name}
-// 			</DropdownMenuTrigger>
-// 			<DropdownMenuContent className="bg-card">
-// 				<DropdownMenuGroup>
-// 					<DropdownMenuLabel>My Account</DropdownMenuLabel>
-// 					<DropdownMenuSeparator />
-// 					<DropdownMenuItem>{user?.email}</DropdownMenuItem>
-// 					<DropdownMenuItem
-// 						variant="destructive"
-// 						onClick={() => {
-// 							authClient.signOut({
-// 								fetchOptions: {
-// 									onSuccess: () => {
-// 										location.reload();
-// 									},
-// 								},
-// 							});
-// 						}}
-// 					>
-// 						Sign Out
-// 					</DropdownMenuItem>
-// 				</DropdownMenuGroup>
-// 			</DropdownMenuContent>
-// 		</DropdownMenu>
-// 	);
-// }
+"use client";
 
 import { api } from "@event-schedulr/backend/convex/_generated/api";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { useQuery } from "convex/react";
 
 import {
@@ -110,9 +63,7 @@ export default function UserMenu() {
                 <p className="text-sm font-medium text-white truncate">
                   {user.name}
                 </p>
-                <p className="text-xs text-white/50 truncate">
-                  {user.email}
-                </p>
+                <p className="text-xs text-white/50 truncate">{user.email}</p>
               </div>
             </div>
           </div>
@@ -120,7 +71,7 @@ export default function UserMenu() {
           <DropdownMenuSeparator className="bg-white/10" />
 
           {/* Profile */}
-          <Link to="/profile">
+          <Link href="/profile">
             <DropdownMenuItem className="gap-2 text-white/80 focus:bg-white/10 focus:text-white cursor-pointer">
               <User className="h-4 w-4" />
               Profile

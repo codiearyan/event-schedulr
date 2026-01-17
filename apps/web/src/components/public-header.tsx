@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 
 export default function PublicHeader() {
   const centerNav = [
@@ -15,7 +15,7 @@ export default function PublicHeader() {
       <div className="absolute inset-0 backdrop-blur-xl" />
 
       <div className="relative mx-auto max-w-7xl px-6 py-4 flex items-center justify-between border-b border-white/10">
-        <Link to="/" className="flex items-center gap-3 group">
+        <Link href="/" className="flex items-center gap-3 group">
           <div className="relative">
             <img
               src="https://cdn.discordapp.com/attachments/843057977023004692/1461325669769150736/WhatsApp_Image_2026-01-15_at_16.47.20-removebg-preview_1_-_Edited_1.png?ex=696a2515&is=6968d395&hm=7069116d20d5579ab03b1b6893cf39b95a3d8bb5e0ef470545755aabf7d79462&"
@@ -33,7 +33,7 @@ export default function PublicHeader() {
           {centerNav.map(({ label, href }) => (
             <Link
               key={label}
-              to={href}
+              href={href}
               className="relative text-sm font-medium text-white/70 hover:text-white transition-colors"
             >
               {label}
@@ -42,8 +42,7 @@ export default function PublicHeader() {
         </nav>
 
         <Link
-          to="/auth"
-          search={{ redirect: undefined }}
+          href="/auth"
           className="relative inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-semibold text-white
           bg-linear-to-br from-primary to-indigo-600
           shadow-lg shadow-primary/20

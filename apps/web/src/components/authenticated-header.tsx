@@ -1,11 +1,14 @@
-import { Link, useLocation } from "@tanstack/react-router";
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { BarChart3, Calendar, Megaphone, Plus } from "lucide-react";
 
 import UserMenu from "@/components/user-menu";
 
 export default function AuthenticatedHeader() {
-  const location = useLocation();
+  const pathname = usePathname();
 
   const navItems = [
     { label: "Events", href: "/events", icon: Calendar },
@@ -21,7 +24,7 @@ export default function AuthenticatedHeader() {
       <div className="absolute inset-0 backdrop-blur-xl" />
 
       <div className="relative mx-auto max-w-7xl px-6 py-4 flex items-center justify-between border-b border-white/10">
-        <Link to="/events" className="flex items-center gap-3 group">
+        <Link href="/events" className="flex items-center gap-3 group">
           <div className="relative">
             <img
               src="https://cdn.discordapp.com/attachments/843057977023004692/1461325669769150736/WhatsApp_Image_2026-01-15_at_16.47.20-removebg-preview_1_-_Edited_1.png?ex=696a2515&is=6968d395&hm=7069116d20d5579ab03b1b6893cf39b95a3d8bb5e0ef470545755aabf7d79462&"
@@ -37,11 +40,11 @@ export default function AuthenticatedHeader() {
 
         <nav className="hidden md:flex items-center gap-2">
           {navItems.map(({ label, href, icon: Icon }) => {
-            const isActive = location.pathname === href;
+            const isActive = pathname === href;
             return (
               <Link
                 key={label}
-                to={href}
+                href={href}
                 className="relative px-4 py-2 rounded-lg"
               >
                 {isActive && (
