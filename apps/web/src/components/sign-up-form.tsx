@@ -162,7 +162,7 @@
 // }
 
 
-"use client"
+
 
 import { useForm } from "@tanstack/react-form"
 import { useNavigate } from "@tanstack/react-router"
