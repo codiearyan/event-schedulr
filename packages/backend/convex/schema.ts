@@ -173,4 +173,34 @@ export default defineSchema({
   })
     .index("by_activity", ["activityId"])
     .index("by_activity_participant", ["activityId", "participantId"]),
+
+
+  sessions: defineTable({
+    eventId: v.id("events"),
+    title: v.string(),
+    description: v.optional(v.string()),
+    date: v.number(),
+    startTime: v.number(),
+    endTime: v.number(),
+    location: v.optional(v.string()),
+    speaker: v.optional(v.string()),
+    // speakerBio: v.optional(v.string()), 
+    type: v.union(
+      v.literal("talk"),
+      v.literal("workshop"),
+      v.literal("break"),
+      v.literal("meal"),
+      v.literal("activity"),
+      v.literal("ceremony"),
+      v.literal("other")
+    ),
+    status: v.union(
+      v.literal("postponed"),
+      v.literal("upcoming"),
+      v.literal("ongoing"),
+      v.literal("completed"),
+      v.literal("cancelled")
+    ),
+  }).index("by_event", ["eventId"])
+
 });
