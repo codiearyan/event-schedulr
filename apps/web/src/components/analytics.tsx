@@ -164,14 +164,14 @@ export default function AnalyticsPage() {
 									Monitor your event performance in real-time
 								</p>
 							</div>
-							{/* <Button
+							<Button
 								onClick={handleSeedData}
 								disabled={isSeeding}
 								className="flex items-center gap-2 rounded-xl border border-gray-700/30 bg-gray-800/40 px-4 py-2 font-medium text-sm text-white transition-colors hover:bg-gray-800/60 disabled:opacity-50"
 							>
 								<Database className="h-4 w-4" />
 								{isSeeding ? "Seeding..." : "Seed Test Data"}
-							</Button> */}
+							</Button>
 						</div>
 					</motion.div>
 
