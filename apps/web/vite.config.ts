@@ -10,10 +10,7 @@ export default defineConfig({
     tailwindcss(),
     tanstackStart(),
     viteReact(),
-    //this nitro plugin is a workaround to deploy on vercel
-    nitro({
-      preset: "vercel",
-    }),
+    nitro(),
   ],
   server: {
     port: 3001,
