@@ -1,6 +1,86 @@
 import { v } from "convex/values"
 import { action, mutation, query } from "./_generated/server"
 
+// Session data type for batch creation
+const sessionDataValidator = v.object({
+	title: v.string(),
+	description: v.optional(v.string()),
+	date: v.number(),
+	startTime: v.number(),
+	endTime: v.number(),
+	location: v.optional(v.string()),
+	speaker: v.optional(v.string()),
+	type: v.union(
+		v.literal("talk"),
+		v.literal("workshop"),
+		v.literal("break"),
+		v.literal("meal"),
+		v.literal("activity"),
+		v.literal("ceremony"),
+		v.literal("other"),
+	),
+	status: v.union(
+		v.literal("postponed"),
+		v.literal("upcoming"),
+		v.literal("ongoing"),
+		v.literal("completed"),
+		v.literal("cancelled"),
+	),
+});
+
+// Create multiple sessions at once (batch creation like Twitter threads)
+export const createMultipleSessions = mutation({
+	args: {
+		eventId: v.id("events"),
+		sessions: v.array(sessionDataValidator),
+	},
+	handler: async (ctx, args) => {
+		const event = await ctx.db.get(args.eventId);
+		if (!event) {
+			throw new Error("Event not found");
+		}
+
+		if (args.sessions.length === 0) {
+			throw new Error("At least one session is required");
+		}
+
+		// Validate all sessions are within event date range
+		for (const sessionData of args.sessions) {
+			if (sessionData.startTime < event.startsAt) {
+				throw new Error(`Session "${sessionData.title}" starts before the event begins`);
+			}
+			if (sessionData.endTime > event.endsAt) {
+				throw new Error(`Session "${sessionData.title}" ends after the event ends`);
+			}
+			if (sessionData.startTime >= sessionData.endTime) {
+				throw new Error(`Session "${sessionData.title}" has invalid time range`);
+			}
+		}
+
+		const createdSessions = [];
+
+		for (const sessionData of args.sessions) {
+			const sessionId = await ctx.db.insert("sessions", {
+				eventId: args.eventId,
+				title: sessionData.title,
+				description: sessionData.description,
+				date: sessionData.date,
+				startTime: sessionData.startTime,
+				endTime: sessionData.endTime,
+				location: sessionData.location,
+				speaker: sessionData.speaker,
+				type: sessionData.type,
+				status: sessionData.status,
+			});
+
+			const session = await ctx.db.get(sessionId);
+			createdSessions.push(session);
+		}
+
+		return createdSessions;
+	},
+});
+
 //create sesion function
 export const createSession = mutation({
 	args: {
