@@ -66,6 +66,16 @@ function generateId() {
 	return Math.random().toString(36).substring(2, 9);
 }
 
+function getEventStatus(
+	startsAt: number,
+	endsAt: number,
+): "upcoming" | "live" | "ended" {
+	const now = Date.now();
+	if (now < startsAt) return "upcoming";
+	if (now > endsAt) return "ended";
+	return "live";
+}
+
 function getTimesFromTimestamp(timestamp: number) {
 	const date = new Date(timestamp);
 	return {
@@ -218,6 +228,28 @@ function CreateScheduleContent() {
 						className="rounded-xl bg-white text-black hover:bg-white/90"
 					>
 						Go to Events
+					</Button>
+				</div>
+			</div>
+		);
+	}
+
+	const eventStatus = getEventStatus(event.startsAt, event.endsAt);
+	if (eventStatus === "ended") {
+		return (
+			<div className="mx-auto max-w-3xl px-6 py-12 text-white">
+				<div className="rounded-xl border border-red-500/30 bg-red-500/10 p-8 text-center">
+					<h2 className="mb-2 font-semibold text-red-400 text-xl">
+						Event Has Ended
+					</h2>
+					<p className="mb-6 text-white/60">
+						You cannot create sessions for an event that has already ended.
+					</p>
+					<Button
+						onClick={() => router.push(`/events/${eventId}`)}
+						className="rounded-xl bg-white text-black hover:bg-white/90"
+					>
+						Back to Event
 					</Button>
 				</div>
 			</div>

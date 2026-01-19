@@ -16,6 +16,7 @@ import {
 	Utensils,
 } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
@@ -69,9 +70,34 @@ const statusColors = {
 
 export function ScheduleTab({ eventId }: ScheduleTabProps) {
 	const sessions = useQuery(api.schedule.getSessionsByEvent, { eventId });
-	const currentSession = useQuery(api.schedule.getCurrentSession, { eventId });
-	const nextSession = useQuery(api.schedule.getNextUpcomingSession, { eventId });
+	const currentSessionQuery = useQuery(api.schedule.getCurrentSession, {
+		eventId,
+	});
+	const nextSessionQuery = useQuery(api.schedule.getNextUpcomingSession, {
+		eventId,
+	});
 	const deleteSession = useMutation(api.schedule.deleteSession);
+
+	const [now, setNow] = useState(Date.now());
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setNow(Date.now());
+		}, 30000);
+		return () => clearInterval(interval);
+	}, []);
+
+	const currentSession =
+		currentSessionQuery &&
+		currentSessionQuery.startTime <= now &&
+		currentSessionQuery.endTime >= now
+			? currentSessionQuery
+			: null;
+
+	const nextSession =
+		nextSessionQuery && nextSessionQuery.startTime > now
+			? nextSessionQuery
+			: null;
 
 	const handleDelete = async (sessionId: Id<"sessions">) => {
 		if (!confirm("Are you sure you want to delete this session?")) return;
@@ -134,7 +160,7 @@ export function ScheduleTab({ eventId }: ScheduleTabProps) {
 	);
 
 	return (
-		<div className="space-y-6 h-full">
+		<div className="h-full space-y-6">
 			<div className="flex items-center justify-between">
 				<h2 className="font-semibold text-white text-xl">Schedule</h2>
 				<Link href={`/schedule-create?eventId=${eventId}`}>
@@ -153,13 +179,15 @@ export function ScheduleTab({ eventId }: ScheduleTabProps) {
 					{currentSession && (
 						<div className="rounded-xl border border-green-500/50 bg-green-600/20 p-4">
 							<div className="mb-3 flex items-center gap-2">
-								<div className="h-3 w-3 rounded-full bg-red-500 animate-pulse" />
-								<h3 className="font-semibold text-green-400 text-sm">HAPPENING NOW</h3>
+								<div className="h-3 w-3 animate-pulse rounded-full bg-red-500" />
+								<h3 className="font-semibold text-green-400 text-sm">
+									HAPPENING NOW
+								</h3>
 							</div>
-							<h4 className="mb-2 font-semibold text-white text-lg">
+							<h4 className="mb-2 font-semibold text-lg text-white">
 								{currentSession.title}
 							</h4>
-							<div className="flex items-center gap-4 text-sm text-green-200">
+							<div className="flex items-center gap-4 text-green-200 text-sm">
 								<span className="flex items-center gap-1">
 									<Clock className="h-4 w-4" />
 									{formatTime(currentSession.startTime)} -{" "}
@@ -181,10 +209,10 @@ export function ScheduleTab({ eventId }: ScheduleTabProps) {
 								<div className="h-3 w-3 rounded-full bg-orange-500" />
 								<h3 className="font-semibold text-blue-400 text-sm">UP NEXT</h3>
 							</div>
-							<h4 className="mb-2 font-semibold text-white text-lg">
+							<h4 className="mb-2 font-semibold text-lg text-white">
 								{nextSession.title}
 							</h4>
-							<div className="flex items-center gap-4 text-sm text-blue-200">
+							<div className="flex items-center gap-4 text-blue-200 text-sm">
 								<span className="flex items-center gap-1">
 									<Clock className="h-4 w-4" />
 									{formatTime(nextSession.startTime)} -{" "}
@@ -210,18 +238,20 @@ export function ScheduleTab({ eventId }: ScheduleTabProps) {
 
 						return (
 							<div key={dateKey} className="space-y-4">
-								<div className="relative flex items-center justify-center my-6">
+								<div className="relative my-6 flex items-center justify-center">
 									<div className="absolute inset-0 flex items-center">
-										<div className="w-full border-t border-white/10" />
+										<div className="w-full border-white/10 border-t" />
 									</div>
 									<div className="relative bg-[#0a0a0f] px-4">
-										<span className="text-white/50 text-sm">{displayDate}</span>
+										<span className="text-sm text-white/50">{displayDate}</span>
 									</div>
 								</div>
 
 								<div className="space-y-3">
 									{dateSessions.map((session) => {
-										const config = typeConfig[session.type as keyof typeof typeConfig] || typeConfig.other;
+										const config =
+											typeConfig[session.type as keyof typeof typeConfig] ||
+											typeConfig.other;
 										const Icon = config.icon;
 
 										return (
@@ -229,7 +259,7 @@ export function ScheduleTab({ eventId }: ScheduleTabProps) {
 												key={session._id}
 												className="flex gap-4 rounded-xl border border-white/10 bg-white/3 p-4 transition-colors hover:bg-white/6"
 											>
-												<div className="flex flex-col items-center gap-1 text-center min-w-[100px]">
+												<div className="flex min-w-[100px] flex-col items-center gap-1 text-center">
 													<span className="font-semibold text-lg text-white">
 														{formatTime(session.startTime)}
 													</span>
@@ -243,13 +273,17 @@ export function ScheduleTab({ eventId }: ScheduleTabProps) {
 
 												<div className="flex-1">
 													<div className="flex items-center gap-2">
-														<h3 className="font-medium text-white">{session.title}</h3>
+														<h3 className="font-medium text-white">
+															{session.title}
+														</h3>
 														<Badge className={`${config.color} rounded-lg`}>
 															{config.label}
 														</Badge>
 														<Badge
 															className={`${
-																statusColors[session.status as keyof typeof statusColors] || statusColors.upcoming
+																statusColors[
+																	session.status as keyof typeof statusColors
+																] || statusColors.upcoming
 															} rounded-lg`}
 														>
 															{session.status}
@@ -281,7 +315,7 @@ export function ScheduleTab({ eventId }: ScheduleTabProps) {
 												<Button
 													size="sm"
 													variant="ghost"
-													className="text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-xl"
+													className="rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-300"
 													onClick={() => handleDelete(session._id)}
 												>
 													<Trash2 size={14} />

@@ -197,7 +197,7 @@ export function EventDetailsModal({
 									)}
 									{event.status}
 								</Badge>
-								{event.isCurrentEvent && (
+								{event.isCurrentEvent && event.status !== "ended" && (
 									<Badge variant="outline">Current Event</Badge>
 								)}
 							</div>

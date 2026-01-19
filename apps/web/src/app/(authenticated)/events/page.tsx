@@ -389,7 +389,8 @@ export default function EventsPage() {
 											key={event._id}
 											event={event}
 											isHighlighted={
-												event.status === "live" || event.isCurrentEvent
+												event.status === "live" ||
+												(event.isCurrentEvent && event.status !== "ended")
 											}
 										/>
 									))}

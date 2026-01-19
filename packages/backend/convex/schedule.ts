@@ -1,5 +1,5 @@
-import { v } from "convex/values"
-import { action, mutation, query } from "./_generated/server"
+import { v } from "convex/values";
+import { action, mutation, query } from "./_generated/server";
 
 // Session data type for batch creation
 const sessionDataValidator = v.object({
@@ -40,6 +40,12 @@ export const createMultipleSessions = mutation({
 			throw new Error("Event not found");
 		}
 
+		if (Date.now() > event.endsAt) {
+			throw new Error(
+				"Cannot create sessions for an event that has already ended",
+			);
+		}
+
 		if (args.sessions.length === 0) {
 			throw new Error("At least one session is required");
 		}
@@ -47,13 +53,19 @@ export const createMultipleSessions = mutation({
 		// Validate all sessions are within event date range
 		for (const sessionData of args.sessions) {
 			if (sessionData.startTime < event.startsAt) {
-				throw new Error(`Session "${sessionData.title}" starts before the event begins`);
+				throw new Error(
+					`Session "${sessionData.title}" starts before the event begins`,
+				);
 			}
 			if (sessionData.endTime > event.endsAt) {
-				throw new Error(`Session "${sessionData.title}" ends after the event ends`);
+				throw new Error(
+					`Session "${sessionData.title}" ends after the event ends`,
+				);
 			}
 			if (sessionData.startTime >= sessionData.endTime) {
-				throw new Error(`Session "${sessionData.title}" has invalid time range`);
+				throw new Error(
+					`Session "${sessionData.title}" has invalid time range`,
+				);
 			}
 		}
 
@@ -113,6 +125,12 @@ export const createSession = mutation({
 		const event = await ctx.db.get(args.eventId);
 		if (!event) {
 			throw new Error("Event not found");
+		}
+
+		if (Date.now() > event.endsAt) {
+			throw new Error(
+				"Cannot create sessions for an event that has already ended",
+			);
 		}
 
 		//creating the session
@@ -275,17 +293,28 @@ export const getCurrentSession = query({
 	handler: async (ctx, args) => {
 		const now = Date.now();
 
+		const event = await ctx.db.get(args.eventId);
+		if (!event || now > event.endsAt) {
+			return null;
+		}
+
 		const sessions = await ctx.db
 			.query("sessions")
 			.withIndex("by_event", (q) => q.eq("eventId", args.eventId))
 			.collect();
 
-		// Find session where startTime <= now <= endTime
-		const currentSession = sessions.find(
+		// Find all sessions where startTime <= now <= endTime
+		const currentSessions = sessions.filter(
 			(session) => session.startTime <= now && session.endTime >= now,
 		);
 
-		return currentSession || null;
+		if (currentSessions.length === 0) {
+			return null;
+		}
+
+		// Return the session with the latest start time (most recently started)
+		currentSessions.sort((a, b) => b.startTime - a.startTime);
+		return currentSessions[0];
 	},
 });
 
@@ -295,6 +324,11 @@ export const getNextUpcomingSession = query({
 	},
 	handler: async (ctx, args) => {
 		const now = Date.now();
+
+		const event = await ctx.db.get(args.eventId);
+		if (!event || now > event.endsAt) {
+			return null;
+		}
 
 		const sessions = await ctx.db
 			.query("sessions")
